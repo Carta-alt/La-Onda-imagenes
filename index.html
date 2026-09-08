@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#123e73" />
+  <meta name="description" content="Carta digital de Restaurante La Onda, Murcia. Cocina mediterránea, mariscos, arroces, pescados y carnes." />
+  <title>Restaurante La Onda | Carta</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Marcellus&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --navy:#123e73;
+      --navy-2:#0d2f59;
+      --blue:#1d5c9e;
+      --sea:#5b8e8c;
+      --ivory:#f7f3e9;
+      --paper:#fffdf8;
+      --sand:#e6d7b2;
+      --wood:#a96f3c;
+      --wood-dark:#704626;
+      --ink:#1b2a38;
+      --muted:#66727e;
+      --line:rgba(18,62,115,.13);
+      --shadow:0 14px 40px rgba(13,47,89,.09);
+      --radius:20px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:"DM Sans",system-ui,sans-serif;
+      color:var(--ink);
+      background:
+        linear-gradient(90deg,
+          rgba(112,70,38,.96) 0,
+          rgba(169,111,60,.86) 11px,
+          var(--ivory) 11px,
+          var(--ivory) calc(100% - 11px),
+          rgba(169,111,60,.86) calc(100% - 11px),
+          rgba(112,70,38,.96) 100%);
+      min-height:100vh;
+      padding-bottom:88px;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;inset:0;
+      pointer-events:none;
+      opacity:.22;
+      background-image:
+        radial-gradient(circle at 20% 10%,rgba(255,255,255,.8),transparent 30%),
+        repeating-linear-gradient(0deg,rgba(18,62,115,.025),rgba(18,62,115,.025) 1px,transparent 1px,transparent 4px);
+      z-index:-1;
+    }
+
+    a{color:inherit}
+    button,select,input{font:inherit}
+
+    .topbar{
+      position:sticky;top:0;z-index:100;
+      background:rgba(247,243,233,.92);
+      backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--line);
+    }
+
+    .topbar-inner{
+      width:min(1100px,100%);
+      margin:auto;
+      padding:9px 16px 8px;
+    }
+
+    .brand-row{
+      display:flex;align-items:center;gap:12px;
+    }
+
+    .logo-mark{
+      width:42px;height:42px;border-radius:50%;
+      display:grid;place-items:center;
+      background:var(--navy);color:white;
+      border:3px solid rgba(230,215,178,.85);
+      box-shadow:0 4px 14px rgba(13,47,89,.17);
+      font-family:"Marcellus",serif;
+      font-size:22px;
+      flex:none;
+    }
+
+    .brand{
+      min-width:0;
+      flex:1;
+    }
+    .brand strong{
+      font-family:"Marcellus",serif;
+      color:var(--navy-2);
+      font-size:21px;
+      line-height:1;
+      font-weight:400;
+      letter-spacing:.01em;
+    }
+
+    .language-picker{
+      position:relative;
+      flex:none;
+    }
+
+    .language-button{
+      border:1px solid rgba(18,62,115,.10);
+      background:rgba(255,253,248,.78);
+      color:var(--navy-2);
+      border-radius:999px;
+      padding:8px 10px 8px 11px;
+      display:flex;
+      align-items:center;
+      gap:7px;
+      cursor:pointer;
+      font-size:12px;
+      font-weight:700;
+      box-shadow:0 3px 12px rgba(13,47,89,.035);
+      transition:background .2s ease,border-color .2s ease,transform .2s ease;
+    }
+
+    .language-button:active{
+      transform:scale(.98);
+    }
+
+    .language-current{
+      display:flex;
+      align-items:center;
+      gap:7px;
+    }
+
+    .flag-real{
+      width:22px;
+      height:15px;
+      display:inline-flex;
+      flex:none;
+      overflow:hidden;
+      border-radius:3px;
+      box-shadow:0 0 0 1px rgba(13,47,89,.12);
+    }
+
+    .flag-real svg{
+      width:100%;
+      height:100%;
+      display:block;
+    }
+
+    .language-arrow{
+      color:var(--wood);
+      font-size:14px;
+      line-height:1;
+      transform:translateY(-1px);
+    }
+
+    .language-menu{
+      position:absolute;
+      top:calc(100% + 8px);
+      right:0;
+      width:170px;
+      background:linear-gradient(145deg,rgba(18,62,115,.98),rgba(29,92,158,.94) 58%,rgba(91,142,140,.90));
+      border:1px solid rgba(255,255,255,.16);
+      border-radius:16px;
+      padding:6px;
+      box-shadow:0 18px 42px rgba(13,47,89,.28);
+      opacity:0;
+      visibility:hidden;
+      transform:translateY(-5px) scale(.98);
+      transform-origin:top right;
+      transition:opacity .18s ease,transform .18s ease,visibility .18s ease;
+      z-index:300;
+    }
+
+    .language-menu.open{
+      opacity:1;
+      visibility:visible;
+      transform:none;
+    }
+
+    .language-option{
+      width:100%;
+      border:0;
+      background:transparent;
+      display:grid;
+      grid-template-columns:28px 1fr 18px;
+      align-items:center;
+      gap:7px;
+      text-align:left;
+      color:rgba(255,255,255,.88);
+      border-radius:11px;
+      padding:9px 8px;
+      cursor:pointer;
+      font-size:12px;
+      transition:background .16s ease,color .16s ease;
+    }
+
+    .language-option:hover,
+    .language-option:active{
+      background:rgba(255,255,255,.10);
+    }
+
+    .language-option.active{
+      color:#fff;
+      font-weight:800;
+      background:rgba(255,255,255,.14);
+    }
+
+    .language-check{
+      opacity:0;
+      color:var(--sand);
+      font-weight:900;
+      text-align:center;
+    }
+
+    .language-option.active .language-check{
+      opacity:1;
+    }
+
+    .category-nav{
+      display:flex;
+      gap:7px;
+      overflow-x:auto;
+      scrollbar-width:none;
+      padding-top:8px;
+      padding-bottom:1px;
+      scroll-snap-type:x proximity;
+    }
+    .category-nav::-webkit-scrollbar{display:none}
+    .category-nav a{
+      text-decoration:none;
+      white-space:nowrap;
+      padding:8px 11px;
+      border-radius:999px;
+      background:rgba(255,253,248,.72);
+      color:var(--navy);
+      border:1px solid rgba(18,62,115,.10);
+      font-size:12px;
+      font-weight:700;
+      scroll-snap-align:start;
+    }
+    .category-nav a:hover{background:var(--navy);color:white}
+
+    .hero{
+      width:min(1100px,100%);
+      margin:auto;
+      padding:34px 22px 24px;
+      text-align:center;
+    }
+
+    .crest{
+      width:74px;height:74px;border-radius:50%;
+      margin:0 auto 14px;
+      display:grid;place-items:center;
+      border:1px solid rgba(18,62,115,.2);
+      background:var(--paper);
+      box-shadow:var(--shadow);
+      font-size:31px;
+    }
+
+    .eyebrow{
+      color:var(--wood);
+      text-transform:uppercase;
+      letter-spacing:.2em;
+      font-weight:700;
+      font-size:11px;
+    }
+
+    h1{
+      font-family:"Marcellus",serif;
+      color:var(--navy-2);
+      font-size:clamp(36px,9vw,64px);
+      font-weight:400;
+      margin:4px 0 7px;
+      line-height:.98;
+    }
+
+    .hero p{
+      margin:0 auto;
+      max-width:620px;
+      color:var(--muted);
+      font-size:15px;
+    }
+
+    .hero-info{
+      margin:20px auto 0;
+      display:flex;justify-content:center;gap:8px;flex-wrap:wrap;
+    }
+    .pill{
+      display:inline-flex;align-items:center;gap:7px;
+      border:1px solid var(--line);
+      padding:8px 11px;
+      border-radius:999px;
+      background:rgba(255,253,248,.75);
+      font-size:12px;
+      font-weight:600;
+      color:var(--navy);
+    }
+
+    .market-note{
+      width:min(720px,calc(100% - 36px));
+      margin:0 auto 25px;
+      padding:13px 16px;
+      background:rgba(230,215,178,.38);
+      border:1px solid rgba(169,111,60,.22);
+      border-radius:14px;
+      color:#684728;
+      font-size:12px;
+      line-height:1.45;
+      text-align:center;
+    }
+
+    main{width:min(980px,100%);margin:auto;padding:0 14px 30px}
+
+    .section{
+      scroll-margin-top:135px;
+      margin:0 0 34px;
+    }
+
+    .section-head{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      margin-bottom:14px;
+      padding:0 3px;
+    }
+    .section h2{
+      font-family:"Marcellus",serif;
+      color:var(--navy);
+      font-size:29px;
+      font-weight:400;
+      margin:0;
+      letter-spacing:.01em;
+    }
+
+    .menu-grid{
+      display:grid;
+      gap:10px;
+    }
+
+    .dish{
+      position:relative;
+      background:rgba(255,253,248,.94);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:11px 11px 10px;
+      box-shadow:0 7px 22px rgba(13,47,89,.035);
+      overflow:hidden;
+    }
+    .dish.popular{
+      border-color:rgba(169,111,60,.45);
+      background:
+        linear-gradient(115deg,rgba(230,215,178,.18),rgba(255,253,248,.98) 42%);
+    }
+    .dish.popular::before{
+      content:"";
+      position:absolute;left:0;top:0;bottom:0;width:4px;
+      background:var(--wood);
+    }
+
+    .dish-top{
+      display:grid;
+      grid-template-columns:38px minmax(0,1fr) auto;
+      gap:10px;
+      align-items:start;
+    }
+    .dish-number{
+      width:36px;height:36px;border-radius:12px;
+      display:grid;place-items:center;
+      color:white;background:var(--navy);
+      font-size:12px;font-weight:800;
+      letter-spacing:.04em;
+    }
+    .dish-name{
+      font-weight:700;
+      line-height:1.25;
+      color:var(--ink);
+      font-size:15px;
+      margin-top:1px;
+    }
+    .dish-sub{
+      display:block;
+      color:var(--muted);
+      font-weight:400;
+      font-size:11px;
+      margin-top:3px;
+      line-height:1.25;
+    }
+    .price{
+      color:var(--navy);
+      font-weight:800;
+      font-size:14px;
+      white-space:nowrap;
+      padding-top:2px;
+      text-align:right;
+    }
+    .price small{
+      color:var(--muted);
+      font-size:9px;
+      display:block;
+      font-weight:600;
+    }
+
+    .dish-meta{
+      display:flex;align-items:center;gap:5px;flex-wrap:wrap;
+      margin:7px 0 0 43px;
+    }
+
+    .tag{
+      font-size:10px;
+      border-radius:999px;
+      padding:4px 7px;
+      font-weight:800;
+      background:rgba(169,111,60,.12);
+      color:#82532e;
+      border:1px solid rgba(169,111,60,.18);
+    }
+    .allergen{
+      width:26px;
+      height:26px;
+      border-radius:50%;
+      display:inline-grid;
+      place-items:center;
+      cursor:help;
+      flex:none;
+    }
+
+    .allergen-symbol{
+      width:26px;
+      height:26px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      color:#fff;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);
+    }
+
+    .allergen-symbol svg{
+      width:16px;
+      height:16px;
+      fill:none;
+      stroke:currentColor;
+      stroke-width:1.65;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+
+    /* Paleta inspirada en la leyenda de la carta física */
+    .allergen-gluten{background:#c85b3d}
+    .allergen-crust{background:#438ab0}
+    .allergen-egg{background:#d9983c}
+    .allergen-fish{background:#215e99}
+    .allergen-peanut{background:#9b674c}
+    .allergen-soy{background:#4c8e7f}
+    .allergen-milk{background:#353535}
+    .allergen-nuts{background:#8d4b5b}
+    .allergen-celery{background:#55a874}
+    .allergen-mustard{background:#c9a137}
+    .allergen-sesame{background:#6c6a67}
+    .allergen-sulfites{background:#b9903b}
+    .allergen-lupin{background:#d4a22d}
+    .allergen-molluscs{background:#4694ae}
+
+    .info-panel{
+      background:var(--navy-2);
+      color:white;
+      border-radius:24px;
+      padding:23px;
+      margin-top:38px;
+      box-shadow:var(--shadow);
+    }
+    .info-panel h2{
+      font-family:"Marcellus",serif;
+      font-weight:400;
+      font-size:28px;
+      margin:0 0 8px;
+    }
+    .info-panel > p{
+      color:rgba(255,255,255,.7);
+      margin:0 0 20px;
+      font-size:13px;
+    }
+    .info-list{
+      display:grid;gap:10px;
+    }
+    .info-item{
+      display:flex;gap:12px;align-items:flex-start;
+      text-decoration:none;
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:14px;
+      padding:12px;
+    }
+    .info-icon{font-size:20px;line-height:1}
+    .info-item strong{display:block;font-size:13px}
+    .info-item span{font-size:12px;color:rgba(255,255,255,.72)}
+
+    .legend{
+      margin-top:25px;
+      background:var(--paper);
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:18px;
+    }
+    .legend h3{
+      font-family:"Marcellus",serif;
+      color:var(--navy);
+      font-weight:400;
+      font-size:22px;
+      margin:0 0 4px;
+    }
+    .legend-note{
+      color:var(--muted);
+      font-size:11px;
+      line-height:1.45;
+      margin-bottom:13px;
+    }
+    .legend-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:8px;
+    }
+    .legend-row{
+      display:flex;align-items:center;gap:7px;
+      font-size:11px;
+      color:var(--ink);
+    }
+
+    .floating-bar{
+      position:fixed;
+      left:50%;bottom:max(10px,env(safe-area-inset-bottom));
+      transform:translateX(-50%);
+      width:min(520px,calc(100% - 24px));
+      z-index:200;
+      display:grid;grid-template-columns:1fr 1fr;
+      gap:8px;
+      padding:8px;
+      border-radius:18px;
+      background:rgba(13,47,89,.93);
+      backdrop-filter:blur(14px);
+      box-shadow:0 14px 38px rgba(7,27,52,.28);
+      border:1px solid rgba(255,255,255,.12);
+    }
+    .floating-bar a{
+      display:flex;align-items:center;justify-content:center;gap:8px;
+      min-height:48px;
+      border-radius:12px;
+      text-decoration:none;
+      font-weight:800;
+      font-size:13px;
+    }
+    .call-btn{background:white;color:var(--navy-2)}
+    .map-btn{background:var(--wood);color:white}
+
+    .footer{
+      text-align:center;
+      color:var(--muted);
+      padding:28px 20px 15px;
+      font-size:10px;
+    }
+
+    .fade{
+      opacity:0;transform:translateY(8px);
+      transition:opacity .45s ease,transform .45s ease;
+    }
+    .fade.visible{opacity:1;transform:none}
+
+    @media (min-width:720px){
+      body{background:
+        linear-gradient(90deg,
+          var(--wood-dark) 0,
+          var(--wood) 24px,
+          var(--ivory) 24px,
+          var(--ivory) calc(100% - 24px),
+          var(--wood) calc(100% - 24px),
+          var(--wood-dark) 100%)}
+      .topbar-inner{padding-inline:28px}
+      .hero{padding-top:52px}
+      .menu-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .legend-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+      .info-list{grid-template-columns:repeat(3,1fr)}
+    }
+
+    @media (min-width:1050px){
+      body{
+        background:
+          linear-gradient(90deg,
+            var(--wood-dark) 0,
+            var(--wood) 34px,
+            var(--ivory) 34px,
+            var(--ivory) calc(100% - 34px),
+            var(--wood) calc(100% - 34px),
+            var(--wood-dark) 100%);
+      }
+    }
+  
+/* FICHA PREMIUM DE PLATO */
+.dish-modal{position:fixed;inset:0;z-index:500;display:flex;align-items:flex-end;justify-content:center;padding:18px;background:rgba(6,20,38,.46);backdrop-filter:blur(10px);opacity:0;visibility:hidden;transition:opacity .24s ease,visibility .24s ease}
+.dish-modal.open{opacity:1;visibility:visible}
+.dish-sheet{position:relative;width:min(560px,100%);max-height:min(78vh,720px);overflow:auto;padding:26px 22px 24px;border:1px solid rgba(255,255,255,.58);border-radius:26px 26px 18px 18px;background:radial-gradient(circle at 85% 0%,rgba(230,215,178,.24),transparent 31%),linear-gradient(145deg,rgba(255,253,248,.995),rgba(247,243,233,.99));box-shadow:0 28px 70px rgba(4,20,38,.34);transform:translateY(28px) scale(.985);opacity:0;transition:transform .30s cubic-bezier(.2,.8,.2,1),opacity .24s ease}
+.dish-modal.open .dish-sheet{transform:none;opacity:1}
+.dish-sheet::before{content:"";position:absolute;left:22px;right:22px;top:0;height:3px;border-radius:0 0 99px 99px;background:linear-gradient(90deg,var(--navy),var(--blue),var(--sea),var(--wood));opacity:.8}
+.dish-close{position:absolute;top:14px;right:14px;width:38px;height:38px;display:grid;place-items:center;border:0;border-radius:50%;background:rgba(18,62,115,.08);color:var(--navy2);font-size:20px;cursor:pointer}
+.dish-modal-number{display:inline-flex;align-items:center;justify-content:center;min-width:42px;height:30px;padding:0 10px;margin-bottom:14px;border-radius:999px;background:var(--navy);color:white;font-size:11px;font-weight:800;letter-spacing:.08em}
+.dish-modal h3{margin:0 42px 7px 0;font-family:"Marcellus",serif;color:var(--navy2);font-size:29px;font-weight:400;line-height:1.08}
+.dish-modal-price{color:var(--woodDark);font-size:14px;font-weight:800}
+.dish-description{min-height:78px;margin:0;color:#44525f;font-size:14px;line-height:1.72}
+.dish-modal-allergens{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}
+.dish-modal-allergens .allergen-label{display:flex;align-items:center;gap:6px;padding:6px 9px 6px 6px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.62);color:var(--muted);font-size:10px;font-weight:700}
+12%{opacity:1}
+  82%{opacity:.92}
+  100%{left:118%;opacity:0}
+}
+
+body.modal-open{overflow:hidden}
+@media(min-width:720px){.dish-modal{align-items:center}.dish-sheet{border-radius:26px;padding:30px 28px 28px}}
+@media(prefers-reduced-motion:reduce){.premium-flash{display:none}.dish,.dish-modal,.dish-sheet{transition:none}}
+
+
+.dish-modal-image{
+  width:100%;
+  aspect-ratio:16/9;
+  margin:18px 0 18px;
+  border-radius:20px;
+  overflow:hidden;
+  background:#e8e1d5;
+  box-shadow:0 14px 34px rgba(13,47,89,.12);
+}
+.dish-modal-image img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+}
+
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-row">
+        <div class="logo-mark">O</div>
+        <div class="brand">
+          <strong id="menuTitle">Carta La Onda</strong>
+        </div>
+        <div class="language-picker">
+          <button id="languageButton" class="language-button" type="button" aria-haspopup="true" aria-expanded="false">
+            <span id="languageCurrent" class="language-current"><span class="flag flag-real" data-flag="es"></span><span>Español</span></span>
+            <span class="language-arrow">⌄</span>
+          </button>
+
+          <div id="languageMenu" class="language-menu" role="menu">
+            <button type="button" class="language-option active" data-lang="es" role="menuitem">
+              <span class="flag-real" data-flag="es"></span><span>Español</span><span class="language-check">✓</span>
+            </button>
+            <button type="button" class="language-option" data-lang="en" role="menuitem">
+              <span class="flag-real" data-flag="en"></span><span>English</span><span class="language-check">✓</span>
+            </button>
+            <button type="button" class="language-option" data-lang="fr" role="menuitem">
+              <span class="flag-real" data-flag="fr"></span><span>Français</span><span class="language-check">✓</span>
+            </button>
+            <button type="button" class="language-option" data-lang="de" role="menuitem">
+              <span class="flag-real" data-flag="de"></span><span>Deutsch</span><span class="language-check">✓</span>
+            </button>
+            <button type="button" class="language-option" data-lang="zh" role="menuitem">
+              <span class="flag-real" data-flag="zh"></span><span>中文</span><span class="language-check">✓</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <nav class="category-nav" id="categoryNav" aria-label="Categorías"></nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="crest">⚓</div>
+    <div class="eyebrow" data-i18n="murciaCuisine">Cocina mediterránea · Murcia</div>
+    <h1>Restaurante<br>La Onda</h1>
+    <p data-i18n="heroText">Producto, mar y cocina tradicional murciana en una carta pensada para disfrutar sin prisa.</p>
+  </section>
+<main id="menu"></main>
+
+  <footer class="footer">
+    <div>Restaurante La Onda · Murcia</div>
+    <div data-i18n="footerNote">Carta preparada para consulta móvil.</div>
+  </footer>
+
+  
+<div class="dish-modal" id="dishModal" aria-hidden="true">
+  <div class="dish-sheet" role="dialog" aria-modal="true" aria-labelledby="dishModalTitle">
+    <button class="dish-close" id="dishClose" type="button" aria-label="Cerrar">×</button>
+    <div class="dish-modal-number" id="dishModalNumber">01</div>
+    <h3 id="dishModalTitle"></h3>
+    <div class="dish-modal-price" id="dishModalPrice"></div>
+    <div class="dish-modal-image"><img id="dishModalImage" alt=""></div>
+        <p class="dish-description" id="dishDescription"></p>
+    <div class="dish-modal-allergens" id="dishModalAllergens"></div>
+  </div>
+</div>
+<div class="floating-bar">
+    <a class="call-btn" href="tel:+34968247882">☎ <span data-i18n="call">Llamar</span></a>
+    <a class="map-btn" href="https://www.google.com/maps/search/?api=1&query=Restaurante%20La%20Onda%2C%20C.%20Bando%20de%20la%20Huerta%2C%20s%2Fn%2C%2030008%20Murcia" target="_blank" rel="noopener">📍 <span data-i18n="directions">Cómo llegar</span></a>
+  </div>
+
+<script>
+const A = {
+  gluten:"Gluten", crust:"Crustáceos", egg:"Huevo",
+  fish:"Pescado", peanut:"Cacahuetes", soy:"Soja",
+  milk:"Lácteos", nuts:"Frutos de cáscara", celery:"Apio",
+  mustard:"Mostaza", sesame:"Sésamo", sulfites:"Sulfitos",
+  lupin:"Altramuces", molluscs:"Moluscos"
+};
+
+const allergenSVG = {
+  gluten:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M12 7c-3-1-5-3-6-5 3 0 5 1 6 3M12 11c-3-1-5-3-6-5 3 0 5 1 6 3M12 15c-3-1-5-3-6-5 3 0 5 1 6 3M12 7c3-1 5-3 6-5-3 0-5 1-6 3M12 11c3-1 5-3 6-5-3 0-5 1-6 3M12 15c3-1 5-3 6-5-3 0-5 1-6 3"/></svg>`,
+  crust:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14c1.4 3 4.8 4.6 8 3.3 2.2-.9 3.6-3 3.6-5.3M7 14c-1.8-.3-3.2-1.5-3.6-3.1M8 11c.2-2.2 2-4 4.3-4 2.6 0 4.7 2.1 4.7 4.7M6 8 3 6M18 8l3-2M10 6 9 3M14 6l1-3"/><circle cx="10.5" cy="10" r=".7" fill="currentColor" stroke="none"/><circle cx="14" cy="10" r=".7" fill="currentColor" stroke="none"/></svg>`,
+  egg:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c3.5 0 6 5.8 6 10.2A6 6 0 0 1 6 13.2C6 8.8 8.5 3 12 3Z"/></svg>`,
+  fish:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12c3-4 7-6 11-4.8 1.8.6 3.4 1.8 4.5 3.4L22 8v8l-2.5-2.6C18.4 15 16.8 16.2 15 16.8 11 18 7 16 4 12Z"/><circle cx="15.7" cy="10.6" r=".65" fill="currentColor" stroke="none"/></svg>`,
+  peanut:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 4.2c2.2-.7 3.9 1.4 3.6 3.3-.2 1.2.4 2.2 1.6 2.8 2 1 2.4 3.9.7 5.4-1.3 1.2-3.1 1.1-4.2.1-1-.9-2-1-3.2-.4-2 .9-4.2-.7-4-2.9.1-1.5 1-2.5 2.1-3.1 1.1-.6 1.5-1.4 1.2-2.6-.3-1.1.5-2.2 2.2-2.6Z"/><path d="m8 8 7 7M7 12l5-5"/></svg>`,
+  soy:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19c1-7 5-12 12-14-1 7-5 12-12 14Z"/><path d="M8 17c3-2 6-5 8-9M6 12c-1.8-1-3-2.7-3-5 3 .2 5 1.7 6 4"/></svg>`,
+  milk:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4h6l1 3v12H8V7l1-3Z"/><path d="M9 7h7M10 4h4"/></svg>`,
+  nuts:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c4 0 7 3 7 7 0 5-3 9-7 11-4-2-7-6-7-11 0-4 3-7 7-7Z"/><path d="M12 6v12M8.5 9.5 12 12l3.5-2.5"/></svg>`,
+  celery:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21V9M12 21V7M15 21V9M12 8c-3-1-4-3-4-5 3 .4 4 2 4 5ZM12 8c3-1 4-3 4-5-3 .4-4 2-4 5ZM9 10C7 9 6 7 6 5c2 .2 3.5 1.5 4 3M15 10c2-1 3-3 3-5-2 .2-3.5 1.5-4 3"/></svg>`,
+  mustard:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21c0-5 1.6-9 4-12 2.4 3 4 7 4 12H8Z"/><path d="M12 9V3M12 5 9 3M12 6l3-3"/></svg>`,
+  sesame:`<svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="8" cy="8" rx="2" ry="3" transform="rotate(-35 8 8)"/><ellipse cx="15.5" cy="7" rx="2" ry="3" transform="rotate(25 15.5 7)"/><ellipse cx="11" cy="15.5" rx="2" ry="3" transform="rotate(20 11 15.5)"/><ellipse cx="17" cy="15" rx="1.7" ry="2.5" transform="rotate(-30 17 15)"/></svg>`,
+  sulfites:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6M10 3v5l-4 7c-1.3 2.3.4 5 3 5h6c2.6 0 4.3-2.7 3-5l-4-7V3"/><path d="M8 14h8"/></svg>`,
+  lupin:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21V5M12 7c-3 0-5-1.5-6-4 3 0 5 1 6 4ZM12 11c-3 0-5-1.3-6-3.5 3 0 5 1 6 3.5ZM12 15c3 0 5-1.3 6-3.5-3 0-5 1-6 3.5ZM12 9c3 0 5-1.3 6-3.5-3 0-5 1-6 3.5Z"/></svg>`,
+  molluscs:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18c0-7 3.5-12 8-12s8 5 8 12H4Z"/><path d="M12 6v12M8 7.5l2 10.5M16 7.5 14 18M5.5 11l4.5 7M18.5 11 14 18"/></svg>`
+};
+
+function allergenIcon(key){
+  return `<span class="allergen-symbol allergen-${key}">${allergenSVG[key]}</span>`;
+}
+
+const categories = [
+  ["aperitivos","Aperitivos"],["mariscos","Mariscos"],["arroces","Arroces"],
+  ["entrantes","Entrantes"],["verduras","Ensaladas, sopas y verduras"],
+  ["guisos","Guisos y huevos"],["pescados","Pescados"],["carne","Carnes"],
+  ["montaditos","Montaditos"],["postres","Postres"]
+];
+
+const dishes = [
+  // Aperitivos
+  ["aperitivos","Anchoa en salmuera","3,20 €",["fish"]],
+  ["aperitivos","Matrimonio","3,20 €",["fish"]],
+  ["aperitivos","Bicicleta","2,50 €",["gluten","egg","fish"]],
+  ["aperitivos","Marinera con anchoa","2,80 €",["gluten","egg","fish"]],
+  ["aperitivos","Marinero con boquerón","2,80 €",["gluten","egg","fish"]],
+  ["aperitivos","Ensaladilla rusa","5,50 €",["egg","fish"]],
+  ["aperitivos","Almendras","2,50 €",["nuts"]],
+  ["aperitivos","Aceitunas","2,00 €",[]],
+  ["aperitivos","Hueva","3,40 €",["fish"]],
+  ["aperitivos","Mojama","3,20 €",["fish"]],
+  ["aperitivos","Lata de berberechos","13,50 €",["molluscs"]],
+  ["aperitivos","Lata de mejillones","10,50 €",["molluscs"]],
+  ["aperitivos","Lata de navajas","14,50 €",["molluscs"]],
+  ["aperitivos","Canapé de salmón","4,00 €",["gluten","fish"]],
+  ["aperitivos","Pulpo","4,20 €",["molluscs"],"popular"],
+  ["aperitivos","Caballitos","2,50 €",["gluten","crust","egg"]],
+  ["aperitivos","Tigres","2,80 €",["gluten","milk","molluscs"]],
+  ["aperitivos","Buñuelos de bacalao","2,50 €",["gluten","egg","fish"]],
+  ["aperitivos","Croquetas de jamón","2,40 €",["gluten","egg","milk"]],
+  ["aperitivos","Champiñón al ajillo o plancha","8,50 €",[]],
+  ["aperitivos","Foie a la plancha con pan de cristal","16,50 €",["gluten"]],
+
+  // Mariscos
+  ["mariscos","Ostras","5,50 €",["molluscs"],"", "unidad"],
+  ["mariscos","Almeja de Carril","23,00 €",["molluscs"],"", "100 g"],
+  ["mariscos","Almeja chirla","8,50 €",["molluscs"],"", "100 g"],
+  ["mariscos","Coquinas","9,00 €",["molluscs"],"", "100 g"],
+  ["mariscos","Berberechos","8,50 €",["molluscs"],"", "100 g"],
+  ["mariscos","Zamburiñas","4,50 €",["molluscs"],"", "unidad"],
+  ["mariscos","Mejillones al vapor","12,00 €",["molluscs"]],
+  ["mariscos","Calamar fresco / de potera","7,50 €",["molluscs"],"popular","100 g"],
+  ["mariscos","Quisquilla","18,00 €",["crust"],"", "100 g"],
+  ["mariscos","Cigala","18,50 €",["crust"],"", "100 g"],
+  ["mariscos","Gamba blanca hervida","16,00 €",["crust"],"popular","100 g"],
+  ["mariscos","Gamba roja","27,00 €",["crust"],"", "100 g"],
+
+  // Arroces
+  ["arroces","Arroz a banda","19,00 €",["fish","molluscs"],"", "persona · mín. 2"],
+  ["arroces","Arroz caldero","19,00 €",["fish"],"", "persona · mín. 2"],
+  ["arroces","Arroz de marisco","22,00 €",["crust","fish","molluscs"],"", "persona · mín. 2"],
+  ["arroces","Arroz y conejo","18,00 €",[],"", "persona · mín. 2"],
+  ["arroces","Arroz de verduras y pollo","17,00 €",["celery"],"", "persona · mín. 2"],
+
+  // Entrantes
+  ["entrantes","Alcachofas con huevos","11,50 €",["egg"]],
+  ["entrantes","Alcachofas con foie","15,50 €",[]],
+  ["entrantes","Anchoas con pan de cristal","12,50 €",["gluten","fish"]],
+  ["entrantes","Bonito escabechado","12,00 €",["fish","sulfites"]],
+  ["entrantes","Calamar nacional","19,50 €",["molluscs"],"popular"],
+  ["entrantes","Calamar a la plancha con champiñón","18,50 €",["molluscs"]],
+  ["entrantes","Crujiente de alcachofa","10,50 €",["gluten"]],
+  ["entrantes","Chipirón frito o al ajillo","14,00 €",["gluten","molluscs"]],
+  ["entrantes","Gambas al ajillo","18,00 €",["crust"]],
+  ["entrantes","Salmón con bonito en escabeche","15,50 €",["fish","sulfites"]],
+  ["entrantes","Salmón al eneldo","15,00 €",["fish"]],
+  ["entrantes","Champiñón relleno de ibérico","10,50 €",[]],
+  ["entrantes","Embutidos variados","14,00 €",[]],
+  ["entrantes","Caña de lomo de Jabugo","14,50 €",[]],
+  ["entrantes","Jamón de Jabugo","22,00 €",[]],
+  ["entrantes","Quesos variados","14,00 €",["milk"]],
+
+  // Verduras / sopas
+  ["verduras","Caldo de pavo con pelotas","7,50 €",["gluten","egg","celery"]],
+  ["verduras","Sopa de pescado o marisco","12,50 €",["crust","fish","molluscs","celery"]],
+  ["verduras","Ensalada mixta","10,00 €",["egg","fish"]],
+  ["verduras","Tomate partido con bonito","12,50 €",["fish"]],
+  ["verduras","Tomate y lechuga perdiz","9,50 €",[]],
+  ["verduras","Tomate con ventresca","14,50 €",["fish"]],
+  ["verduras","Berenjenas a la crema","11,50 €",["gluten","milk"]],
+  ["verduras","Champiñón a la plancha o ajillo","8,50 €",[]],
+  ["verduras","Habas salteadas a la murciana","10,50 €",[]],
+  ["verduras","Habas tiernas","9,00 €",[]],
+  ["verduras","Panaché de verduras con jamón","12,00 €",["celery"]],
+  ["verduras","Pastel de puerros con gambas","13,50 €",["gluten","crust","egg","milk"]],
+
+  // Guisos y huevos
+  ["guisos","Guiso del día","12,50 €",[]],
+  ["guisos","Huevos con patatas","10,00 €",["egg"]],
+  ["guisos","Huevos revueltos Onda","12,00 €",["egg"]],
+  ["guisos","Tortilla de espárragos","10,50 €",["egg"]],
+  ["guisos","Tortilla de gambas","13,50 €",["crust","egg"]],
+  ["guisos","Tortilla de jamón o chorizo","11,50 €",["egg"]],
+
+  // Pescados
+  ["pescados","Atún de ijada","19,50 €",["fish"]],
+  ["pescados","Chirrete frito","14,00 €",["gluten","fish"]],
+  ["pescados","Cocochas a la romana o al pil-pil","22,00 €",["gluten","egg","fish"]],
+  ["pescados","Corvina a la murciana","21,00 €",["fish"]],
+  ["pescados","Dorada a la sal","22,00 €",["fish"]],
+  ["pescados","Gallo Pedro frito","S/M",["gluten","fish"]],
+  ["pescados","Lenguado a la plancha o meunière","24,00 €",["gluten","fish","milk"]],
+  ["pescados","Lubina al ajo pescador","23,00 €",["fish"]],
+  ["pescados","Merluza a la plancha o romana","21,00 €",["gluten","egg","fish"]],
+  ["pescados","Merluza en salsa verde","22,00 €",["fish"]],
+  ["pescados","Mero a la cazuela o plancha","S/M",["fish"]],
+  ["pescados","Rape a la marinera","25,00 €",["crust","fish","molluscs"]],
+  ["pescados","Rodaballo al horno o plancha","S/M",["fish"]],
+
+  // Carnes
+  ["carne","Entrecot","26,00 €",[]],
+  ["carne","Solomillo a la pimienta o roquefort","27,00 €",["milk"]],
+  ["carne","Solomillo a la brasa o foie y PX","29,00 €",["sulfites"]],
+  ["carne","Paletilla de cabrito al horno","25,00 €",[]],
+  ["carne","Chuletas de cabrito a la plancha","21,00 €",[]],
+  ["carne","Chuletón a la brasa","58,00 €",[],"popular","kg"],
+  ["carne","Cochinillo al horno","24,00 €",[]],
+  ["carne","Brocheta de solomillo al Jerez","23,00 €",["sulfites"]],
+  ["carne","Lechazo de cabrito","24,00 €",[]],
+  ["carne","Pluma ibérica a la parrilla","22,00 €",[]],
+  ["carne","Solomillo tártaro","24,00 €",["egg","mustard"]],
+  ["carne","Escalope milanesa","17,50 €",["gluten","egg"]],
+  ["carne","Rabo de toro en su jugo","19,50 €",["celery","sulfites"]],
+  ["carne","Lomo de cerdo con setas","16,50 €",[]],
+  ["carne","Pechuga de pollo a la plancha","14,00 €",[]],
+
+  // Montaditos
+  ["montaditos","Montadito de lomo","4,00 €",["gluten"]],
+  ["montaditos","Montadito de ternera","4,50 €",["gluten"]],
+  ["montaditos","Montadito de solomillo","5,00 €",["gluten"]],
+  ["montaditos","Montadito de solomillo y foie","6,00 €",["gluten"]],
+
+  // Postres
+  ["postres","Fruta","4,00 €",[]],
+  ["postres","Sorbetes","4,50 €",[]],
+  ["postres","Fresas con nata","5,50 €",["milk"]],
+  ["postres","Helado","4,50 €",["milk"]],
+  ["postres","Arroz con leche","5,00 €",["milk"]],
+  ["postres","Natillas","5,00 €",["egg","milk"]],
+  ["postres","Soufflé con helado","6,50 €",["gluten","egg","milk"]],
+  ["postres","Leche frita con helado","6,50 €",["gluten","egg","milk"]],
+  ["postres","Milhoja con crema o chocolate","6,50 €",["gluten","egg","milk"]],
+  ["postres","Tarta de chocolate","6,00 €",["gluten","egg","milk"]],
+  ["postres","Tarta de la abuela","6,00 €",["gluten","egg","milk"]],
+  ["postres","Tarta de manzana","5,50 €",["gluten","egg","milk"]],
+  ["postres","Tarta de queso","6,00 €",["gluten","egg","milk"],"popular"],
+  ["postres","Tarta de turrón","6,00 €",["egg","milk","nuts"]],
+  ["postres","Teja con helado y chocolate","6,50 €",["gluten","egg","milk","nuts"]],
+  ["postres","Tocino de cielo","5,50 €",["egg"]],
+  ["postres","Pastel de frutas","6,00 €",["gluten","egg","milk"]]
+];
+
+const dishImagePool = ["https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1600891964092-4316c288032e?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1517244683847-7456b63c5969?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1571997478779-2adcbbe9ab2f?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1548943487-a2e4e43b4853?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1572449043416-55f4685c9bb7?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1559329007-40df8a9345d8?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1533777857889-4be7c70b33f7?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1528712306091-ed0763094c98?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1578474846511-04ba529f0b88?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1564758866811-4780aa0a1f3d?auto=format&fit=crop&w=1200&q=88", "https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=1200&q=88"];
+const dishImages = dishes.map((_,i)=>dishImagePool[i % dishImagePool.length]);
+
+// Curated translations for category/UI. Dish names remain recognisable and are
+// translated automatically through a compact phrase dictionary below.
+const ui = {
+es:{digitalMenu:"Carta digital",murciaCuisine:"Cocina mediterránea · Murcia",heroText:"Producto, mar y cocina tradicional murciana en una carta pensada para disfrutar sin prisa.",freshSeafood:"Marisco y pescado fresco",rice:"Arroces",grill:"Brasa",marketTitle:"Precios orientativos.",marketText:" Algunos productos frescos se indican por unidad, 100 g, kg o según mercado. Confirme disponibilidad y precio final con el personal.",popular:"Popular",dishes:"platos",info:"Información",about:"Cocina mediterránea, producto fresco y especialidades tradicionales.",address:"Dirección",hours:"Horario",phone:"Teléfono",call:"Llamar",directions:"Cómo llegar",allergens:"Leyenda de alérgenos",allergenNote:"Los iconos facilitan la consulta. En caso de alergia o intolerancia, informe siempre al personal antes de pedir. Puede haber trazas por manipulación en cocina.",footerNote:"Carta preparada para consulta móvil.",schedule:"Mar–Sáb 09:00–16:30 · 20:00–23:00 · Dom 09:00–14:30 · Lun cerrado"},
+en:{digitalMenu:"Digital menu",murciaCuisine:"Mediterranean cuisine · Murcia",heroText:"Fresh produce, sea flavours and traditional Murcian cooking, made to be enjoyed at an easy pace.",freshSeafood:"Fresh seafood & fish",rice:"Rice dishes",grill:"Charcoal grill",marketTitle:"Indicative prices.",marketText:" Some fresh products are priced per unit, 100 g, kg or according to market. Please confirm final availability and price with our staff.",popular:"Popular",dishes:"dishes",info:"Information",about:"Mediterranean cuisine, fresh produce and traditional specialities.",address:"Address",hours:"Opening hours",phone:"Phone",call:"Call",directions:"Directions",allergens:"Allergen key",allergenNote:"Icons make consultation easier. If you have any allergy or intolerance, always inform our staff before ordering. Traces may occur during kitchen handling.",footerNote:"Menu optimised for mobile viewing.",schedule:"Tue–Sat 09:00–16:30 · 20:00–23:00 · Sun 09:00–14:30 · Mon closed"},
+fr:{digitalMenu:"Carte numérique",murciaCuisine:"Cuisine méditerranéenne · Murcie",heroText:"Produits frais, saveurs de la mer et cuisine murcienne traditionnelle à savourer tranquillement.",freshSeafood:"Fruits de mer & poisson frais",rice:"Riz",grill:"Grillades",marketTitle:"Prix indicatifs.",marketText:" Certains produits frais sont facturés à l’unité, aux 100 g, au kg ou selon le marché. Veuillez confirmer la disponibilité et le prix final auprès du personnel.",popular:"Populaire",dishes:"plats",info:"Informations",about:"Cuisine méditerranéenne, produits frais et spécialités traditionnelles.",address:"Adresse",hours:"Horaires",phone:"Téléphone",call:"Appeler",directions:"Itinéraire",allergens:"Légende des allergènes",allergenNote:"Les icônes facilitent la consultation. En cas d’allergie ou d’intolérance, prévenez toujours le personnel avant de commander. Des traces peuvent être présentes.",footerNote:"Carte optimisée pour mobile.",schedule:"Mar–Sam 09:00–16:30 · 20:00–23:00 · Dim 09:00–14:30 · Lun fermé"},
+de:{digitalMenu:"Digitale Speisekarte",murciaCuisine:"Mediterrane Küche · Murcia",heroText:"Frische Produkte, Aromen des Meeres und traditionelle Küche aus Murcia – zum entspannten Genießen.",freshSeafood:"Frische Meeresfrüchte & Fisch",rice:"Reisgerichte",grill:"Grill",marketTitle:"Richtpreise.",marketText:" Einige frische Produkte werden pro Stück, 100 g, kg oder nach Marktpreis berechnet. Bitte Verfügbarkeit und Endpreis beim Personal bestätigen.",popular:"Beliebt",dishes:"Gerichte",info:"Information",about:"Mediterrane Küche, frische Produkte und traditionelle Spezialitäten.",address:"Adresse",hours:"Öffnungszeiten",phone:"Telefon",call:"Anrufen",directions:"Route",allergens:"Allergen-Legende",allergenNote:"Die Symbole erleichtern die Orientierung. Bei Allergien oder Unverträglichkeiten informieren Sie bitte vor der Bestellung das Personal. Spuren können vorkommen.",footerNote:"Für die mobile Ansicht optimiert.",schedule:"Di–Sa 09:00–16:30 · 20:00–23:00 · So 09:00–14:30 · Mo geschlossen"},
+zh:{digitalMenu:"电子菜单",murciaCuisine:"地中海料理 · 穆尔西亚",heroText:"新鲜食材、海洋风味与穆尔西亚传统料理，悠然享受每一道菜。",freshSeafood:"新鲜海鲜与鱼类",rice:"米饭料理",grill:"炭火烧烤",marketTitle:"参考价格。",marketText:" 部分新鲜食材按个、100克、公斤或当日市场价计价。请向工作人员确认供应情况及最终价格。",popular:"人气推荐",dishes:"道菜",info:"餐厅信息",about:"地中海料理、新鲜食材与传统特色菜。",address:"地址",hours:"营业时间",phone:"电话",call:"拨打电话",directions:"导航",allergens:"过敏原图例",allergenNote:"图标仅用于方便查看。如有食物过敏或不耐受，请在点餐前告知工作人员。厨房处理过程中可能存在微量交叉接触。",footerNote:"本菜单已针对手机浏览优化。",schedule:"周二至周六 09:00–16:30 · 20:00–23:00 · 周日 09:00–14:30 · 周一休息"}
+};
+
+const catT = {
+es:{aperitivos:"Aperitivos",mariscos:"Mariscos",arroces:"Arroces",entrantes:"Entrantes",verduras:"Ensaladas, sopas y verduras",guisos:"Guisos y huevos",pescados:"Pescados",carne:"Carnes",montaditos:"Montaditos",postres:"Postres"},
+en:{aperitivos:"Appetisers",mariscos:"Seafood",arroces:"Rice dishes",entrantes:"Starters",verduras:"Salads, soups & vegetables",guisos:"Stews & eggs",pescados:"Fish",carne:"Meat",montaditos:"Mini sandwiches",postres:"Desserts"},
+fr:{aperitivos:"Apéritifs",mariscos:"Fruits de mer",arroces:"Riz",entrantes:"Entrées",verduras:"Salades, soupes & légumes",guisos:"Plats mijotés & œufs",pescados:"Poissons",carne:"Viandes",montaditos:"Montaditos",postres:"Desserts"},
+de:{aperitivos:"Appetithappen",mariscos:"Meeresfrüchte",arroces:"Reisgerichte",entrantes:"Vorspeisen",verduras:"Salate, Suppen & Gemüse",guisos:"Eintöpfe & Eier",pescados:"Fisch",carne:"Fleisch",montaditos:"Kleine Sandwiches",postres:"Desserts"},
+zh:{aperitivos:"开胃小吃",mariscos:"海鲜",arroces:"米饭料理",entrantes:"前菜",verduras:"沙拉、汤与蔬菜",guisos:"炖菜与鸡蛋",pescados:"鱼类",carne:"肉类",montaditos:"迷你三明治",postres:"甜点"}
+};
+
+// Common culinary term translations. If a full dish is not mapped, Spanish is
+// kept as a useful reference for ordering, while the dish number never changes.
+const dishT = {"en":{"Anchoa en salmuera":"Salt-cured anchovy","Matrimonio":"Anchovy & boquerón duo","Bicicleta":"Russian salad on a crisp bread ring","Marinera con anchoa":"Marinera with anchovy","Marinero con boquerón":"Marinero with boquerón","Ensaladilla rusa":"Russian salad","Almendras":"Almonds","Aceitunas":"Olives","Hueva":"Cured fish roe","Mojama":"Cured tuna loin","Lata de berberechos":"Tin of cockles","Lata de mejillones":"Tin of mussels","Lata de navajas":"Tin of razor clams","Canapé de salmón":"Salmon canapé","Pulpo":"Octopus","Caballitos":"Battered prawns","Tigres":"Stuffed mussels","Buñuelos de bacalao":"Cod fritters","Croquetas de jamón":"Ham croquettes","Champiñón al ajillo o plancha":"Garlic or grilled mushrooms","Foie a la plancha con pan de cristal":"Grilled foie with crystal bread","Ostras":"Oysters","Almeja de Carril":"Carril clams","Almeja chirla":"Small clams","Coquinas":"Wedge clams","Berberechos":"Cockles","Zamburiñas":"Scallops","Mejillones al vapor":"Steamed mussels","Calamar fresco / de potera":"Fresh line-caught squid","Quisquilla":"Local shrimp","Cigala":"Langoustine","Gamba blanca hervida":"Boiled white prawns","Gamba roja":"Red prawns","Arroz a banda":"A banda rice","Arroz caldero":"Murcian caldero rice","Arroz de marisco":"Seafood rice","Arroz y conejo":"Rice with rabbit","Arroz de verduras y pollo":"Vegetable & chicken rice","Alcachofas con huevos":"Artichokes with eggs","Alcachofas con foie":"Artichokes with foie","Anchoas con pan de cristal":"Anchovies with crystal bread","Bonito escabechado":"Pickled bonito tuna","Calamar nacional":"Spanish squid","Calamar a la plancha con champiñón":"Grilled squid with mushrooms","Crujiente de alcachofa":"Crispy artichoke","Chipirón frito o al ajillo":"Fried or garlic baby squid","Gambas al ajillo":"Garlic prawns","Salmón con bonito en escabeche":"Salmon with pickled bonito","Salmón al eneldo":"Salmon with dill","Champiñón relleno de ibérico":"Mushrooms stuffed with Iberian ham","Embutidos variados":"Assorted cured meats","Caña de lomo de Jabugo":"Jabugo cured pork loin","Jamón de Jabugo":"Jabugo ham","Quesos variados":"Assorted cheeses","Caldo de pavo con pelotas":"Turkey broth with meatballs","Sopa de pescado o marisco":"Fish or seafood soup","Ensalada mixta":"Mixed salad","Tomate partido con bonito":"Tomato with bonito tuna","Tomate y lechuga perdiz":"Tomato with partridge lettuce","Tomate con ventresca":"Tomato with tuna belly","Berenjenas a la crema":"Creamy aubergines","Champiñón a la plancha o ajillo":"Grilled or garlic mushrooms","Habas salteadas a la murciana":"Murcian-style sautéed broad beans","Habas tiernas":"Tender broad beans","Panaché de verduras con jamón":"Mixed vegetables with ham","Pastel de puerros con gambas":"Leek and prawn pie","Guiso del día":"Stew of the day","Huevos con patatas":"Eggs with potatoes","Huevos revueltos Onda":"La Onda scrambled eggs","Tortilla de espárragos":"Asparagus omelette","Tortilla de gambas":"Prawn omelette","Tortilla de jamón o chorizo":"Ham or chorizo omelette","Atún de ijada":"Tuna belly cut","Chirrete frito":"Fried chirrete fish","Cocochas a la romana o al pil-pil":"Kokotxas Roman-style or pil-pil","Corvina a la murciana":"Murcian-style meagre","Dorada a la sal":"Salt-baked sea bream","Gallo Pedro frito":"Fried John Dory","Lenguado a la plancha o meunière":"Grilled or meunière sole","Lubina al ajo pescador":"Sea bass with fisherman’s garlic","Merluza a la plancha o romana":"Grilled or Roman-style hake","Merluza en salsa verde":"Hake in green sauce","Mero a la cazuela o plancha":"Grouper casserole or grilled","Rape a la marinera":"Monkfish in seafood sauce","Rodaballo al horno o plancha":"Baked or grilled turbot","Entrecot":"Entrecôte","Solomillo a la pimienta o roquefort":"Tenderloin with pepper or Roquefort sauce","Solomillo a la brasa o foie y PX":"Charcoal tenderloin or foie & Pedro Ximénez","Paletilla de cabrito al horno":"Roast kid-goat shoulder","Chuletas de cabrito a la plancha":"Grilled kid-goat chops","Chuletón a la brasa":"Charcoal-grilled rib steak","Cochinillo al horno":"Roast suckling pig","Brocheta de solomillo al Jerez":"Tenderloin skewer with Sherry","Lechazo de cabrito":"Young kid goat","Pluma ibérica a la parrilla":"Grilled Iberian pork pluma","Solomillo tártaro":"Beef tenderloin tartare","Escalope milanesa":"Milanese escalope","Rabo de toro en su jugo":"Oxtail in its own jus","Lomo de cerdo con setas":"Pork loin with mushrooms","Pechuga de pollo a la plancha":"Grilled chicken breast","Montadito de lomo":"Pork loin mini sandwich","Montadito de ternera":"Beef mini sandwich","Montadito de solomillo":"Tenderloin mini sandwich","Montadito de solomillo y foie":"Tenderloin & foie mini sandwich","Fruta":"Fresh fruit","Sorbetes":"Sorbets","Fresas con nata":"Strawberries with cream","Helado":"Ice cream","Arroz con leche":"Rice pudding","Natillas":"Custard","Soufflé con helado":"Soufflé with ice cream","Leche frita con helado":"Fried milk pudding with ice cream","Milhoja con crema o chocolate":"Mille-feuille with cream or chocolate","Tarta de chocolate":"Chocolate cake","Tarta de la abuela":"Grandma’s cake","Tarta de manzana":"Apple cake","Tarta de queso":"Cheesecake","Tarta de turrón":"Nougat cake","Teja con helado y chocolate":"Crisp wafer with ice cream & chocolate","Tocino de cielo":"Tocino de cielo custard","Pastel de frutas":"Fruit cake"},"fr":{"Anchoa en salmuera":"Anchois en saumure","Matrimonio":"Duo anchois et boquerón","Bicicleta":"Rosquilla croustillante à la salade russe","Marinera con anchoa":"Marinera à l’anchois","Marinero con boquerón":"Marinero au boquerón","Ensaladilla rusa":"Salade russe","Almendras":"Amandes","Aceitunas":"Olives","Hueva":"Œufs de poisson séchés","Mojama":"Longe de thon séchée","Lata de berberechos":"Boîte de coques","Lata de mejillones":"Boîte de moules","Lata de navajas":"Boîte de couteaux de mer","Canapé de salmón":"Canapé au saumon","Pulpo":"Poulpe","Caballitos":"Crevettes en beignet","Tigres":"Moules farcies","Buñuelos de bacalao":"Beignets de morue","Croquetas de jamón":"Croquettes au jambon","Champiñón al ajillo o plancha":"Champignons à l’ail ou grillés","Foie a la plancha con pan de cristal":"Foie grillé avec pain cristal","Ostras":"Huîtres","Almeja de Carril":"Palourdes de Carril","Almeja chirla":"Petites palourdes","Coquinas":"Tellines","Berberechos":"Coques","Zamburiñas":"Pétoncles","Mejillones al vapor":"Moules à la vapeur","Calamar fresco / de potera":"Calamar frais pêché à la ligne","Quisquilla":"Petite crevette locale","Cigala":"Langoustine","Gamba blanca hervida":"Crevettes blanches bouillies","Gamba roja":"Crevettes rouges","Arroz a banda":"Riz a banda","Arroz caldero":"Riz caldero murcien","Arroz de marisco":"Riz aux fruits de mer","Arroz y conejo":"Riz au lapin","Arroz de verduras y pollo":"Riz aux légumes et poulet","Alcachofas con huevos":"Artichauts aux œufs","Alcachofas con foie":"Artichauts au foie","Anchoas con pan de cristal":"Anchois avec pain cristal","Bonito escabechado":"Bonite marinée","Calamar nacional":"Calamar espagnol","Calamar a la plancha con champiñón":"Calamar grillé aux champignons","Crujiente de alcachofa":"Artichaut croustillant","Chipirón frito o al ajillo":"Petits calamars frits ou à l’ail","Gambas al ajillo":"Crevettes à l’ail","Salmón con bonito en escabeche":"Saumon avec bonite marinée","Salmón al eneldo":"Saumon à l’aneth","Champiñón relleno de ibérico":"Champignons farcis à l’ibérique","Embutidos variados":"Assortiment de charcuteries","Caña de lomo de Jabugo":"Longe de porc séchée de Jabugo","Jamón de Jabugo":"Jambon de Jabugo","Quesos variados":"Assortiment de fromages","Caldo de pavo con pelotas":"Bouillon de dinde aux boulettes","Sopa de pescado o marisco":"Soupe de poisson ou fruits de mer","Ensalada mixta":"Salade mixte","Tomate partido con bonito":"Tomate avec bonite","Tomate y lechuga perdiz":"Tomate et laitue perdiz","Tomate con ventresca":"Tomate à la ventrèche de thon","Berenjenas a la crema":"Aubergines à la crème","Champiñón a la plancha o ajillo":"Champignons grillés ou à l’ail","Habas salteadas a la murciana":"Fèves sautées à la murcienne","Habas tiernas":"Fèves tendres","Panaché de verduras con jamón":"Panaché de légumes au jambon","Pastel de puerros con gambas":"Tarte aux poireaux et crevettes","Guiso del día":"Ragoût du jour","Huevos con patatas":"Œufs aux pommes de terre","Huevos revueltos Onda":"Œufs brouillés La Onda","Tortilla de espárragos":"Omelette aux asperges","Tortilla de gambas":"Omelette aux crevettes","Tortilla de jamón o chorizo":"Omelette au jambon ou chorizo","Atún de ijada":"Partie ventrale de thon","Chirrete frito":"Petit poisson chirrete frit","Cocochas a la romana o al pil-pil":"Kokotxas à la romaine ou pil-pil","Corvina a la murciana":"Maigre à la murcienne","Dorada a la sal":"Daurade en croûte de sel","Gallo Pedro frito":"Saint-Pierre frit","Lenguado a la plancha o meunière":"Sole grillée ou meunière","Lubina al ajo pescador":"Bar à l’ail du pêcheur","Merluza a la plancha o romana":"Merlu grillé ou à la romaine","Merluza en salsa verde":"Merlu en sauce verte","Mero a la cazuela o plancha":"Mérou en cocotte ou grillé","Rape a la marinera":"Lotte sauce marinière","Rodaballo al horno o plancha":"Turbot au four ou grillé","Entrecot":"Entrecôte","Solomillo a la pimienta o roquefort":"Filet de bœuf au poivre ou roquefort","Solomillo a la brasa o foie y PX":"Filet grillé ou foie et Pedro Ximénez","Paletilla de cabrito al horno":"Épaule de chevreau rôtie","Chuletas de cabrito a la plancha":"Côtelettes de chevreau grillées","Chuletón a la brasa":"Côte de bœuf grillée","Cochinillo al horno":"Cochon de lait rôti","Brocheta de solomillo al Jerez":"Brochette de filet au Xérès","Lechazo de cabrito":"Jeune chevreau","Pluma ibérica a la parrilla":"Pluma ibérique grillée","Solomillo tártaro":"Tartare de filet de bœuf","Escalope milanesa":"Escalope milanaise","Rabo de toro en su jugo":"Queue de taureau dans son jus","Lomo de cerdo con setas":"Longe de porc aux champignons","Pechuga de pollo a la plancha":"Blanc de poulet grillé","Montadito de lomo":"Mini-sandwich au porc","Montadito de ternera":"Mini-sandwich au bœuf","Montadito de solomillo":"Mini-sandwich au filet","Montadito de solomillo y foie":"Mini-sandwich filet et foie","Fruta":"Fruits frais","Sorbetes":"Sorbets","Fresas con nata":"Fraises à la crème","Helado":"Glace","Arroz con leche":"Riz au lait","Natillas":"Crème dessert","Soufflé con helado":"Soufflé avec glace","Leche frita con helado":"Lait frit avec glace","Milhoja con crema o chocolate":"Mille-feuille à la crème ou au chocolat","Tarta de chocolate":"Gâteau au chocolat","Tarta de la abuela":"Gâteau de grand-mère","Tarta de manzana":"Gâteau aux pommes","Tarta de queso":"Gâteau au fromage","Tarta de turrón":"Gâteau au nougat","Teja con helado y chocolate":"Tuile avec glace et chocolat","Tocino de cielo":"Flan espagnol aux jaunes d’œufs","Pastel de frutas":"Gâteau aux fruits"},"de":{"Anchoa en salmuera":"Salzlake-Sardelle","Matrimonio":"Sardellen-Boquerón-Duo","Bicicleta":"Knuspriger Brotkringel mit russischem Salat","Marinera con anchoa":"Marinera mit Sardelle","Marinero con boquerón":"Marinero mit Boquerón","Ensaladilla rusa":"Russischer Salat","Almendras":"Mandeln","Aceitunas":"Oliven","Hueva":"Getrockneter Fischrogen","Mojama":"Luftgetrocknete Thunfischlende","Lata de berberechos":"Dose Herzmuscheln","Lata de mejillones":"Dose Miesmuscheln","Lata de navajas":"Dose Schwertmuscheln","Canapé de salmón":"Lachs-Canapé","Pulpo":"Oktopus","Caballitos":"Garnelen im Teigmantel","Tigres":"Gefüllte Miesmuscheln","Buñuelos de bacalao":"Kabeljau-Krapfen","Croquetas de jamón":"Schinken-Kroketten","Champiñón al ajillo o plancha":"Champignons mit Knoblauch oder gegrillt","Foie a la plancha con pan de cristal":"Gegrillte Foie mit knusprigem Brot","Ostras":"Austern","Almeja de Carril":"Carril-Muscheln","Almeja chirla":"Kleine Venusmuscheln","Coquinas":"Dreiecksmuscheln","Berberechos":"Herzmuscheln","Zamburiñas":"Kleine Jakobsmuscheln","Mejillones al vapor":"Gedämpfte Miesmuscheln","Calamar fresco / de potera":"Frischer Leinen-Kalmar","Quisquilla":"Lokale Kleingarnele","Cigala":"Kaisergranat","Gamba blanca hervida":"Gekochte weiße Garnelen","Gamba roja":"Rote Garnelen","Arroz a banda":"A-banda-Reis","Arroz caldero":"Murcianischer Caldero-Reis","Arroz de marisco":"Meeresfrüchte-Reis","Arroz y conejo":"Reis mit Kaninchen","Arroz de verduras y pollo":"Gemüse-Hähnchen-Reis","Alcachofas con huevos":"Artischocken mit Ei","Alcachofas con foie":"Artischocken mit Foie","Anchoas con pan de cristal":"Sardellen mit knusprigem Brot","Bonito escabechado":"Marinierter Bonito","Calamar nacional":"Spanischer Kalmar","Calamar a la plancha con champiñón":"Gegrillter Kalmar mit Champignons","Crujiente de alcachofa":"Knusprige Artischocke","Chipirón frito o al ajillo":"Frittierter oder Knoblauch-Babykalmar","Gambas al ajillo":"Knoblauchgarnelen","Salmón con bonito en escabeche":"Lachs mit mariniertem Bonito","Salmón al eneldo":"Lachs mit Dill","Champiñón relleno de ibérico":"Champignons mit Ibérico-Füllung","Embutidos variados":"Gemischte Wurstwaren","Caña de lomo de Jabugo":"Jabugo-Lendenschinken","Jamón de Jabugo":"Jabugo-Schinken","Quesos variados":"Käseauswahl","Caldo de pavo con pelotas":"Putenbrühe mit Fleischbällchen","Sopa de pescado o marisco":"Fisch- oder Meeresfrüchtesuppe","Ensalada mixta":"Gemischter Salat","Tomate partido con bonito":"Tomate mit Bonito","Tomate y lechuga perdiz":"Tomate mit Perdiz-Salat","Tomate con ventresca":"Tomate mit Thunfischbauch","Berenjenas a la crema":"Cremige Auberginen","Champiñón a la plancha o ajillo":"Gegrillte oder Knoblauch-Champignons","Habas salteadas a la murciana":"Murcianische Saubohnen","Habas tiernas":"Zarte Saubohnen","Panaché de verduras con jamón":"Gemüsemischung mit Schinken","Pastel de puerros con gambas":"Lauch-Garnelen-Pastete","Guiso del día":"Eintopf des Tages","Huevos con patatas":"Eier mit Kartoffeln","Huevos revueltos Onda":"La Onda Rührei","Tortilla de espárragos":"Spargel-Omelett","Tortilla de gambas":"Garnelen-Omelett","Tortilla de jamón o chorizo":"Schinken- oder Chorizo-Omelett","Atún de ijada":"Thunfisch-Bauchstück","Chirrete frito":"Frittierter Chirrete-Fisch","Cocochas a la romana o al pil-pil":"Kokotxas römisch oder Pil-Pil","Corvina a la murciana":"Murcianischer Adlerfisch","Dorada a la sal":"Dorade in Salzkruste","Gallo Pedro frito":"Frittierter Petersfisch","Lenguado a la plancha o meunière":"Seezunge gegrillt oder Meunière","Lubina al ajo pescador":"Wolfsbarsch mit Fischerknoblauch","Merluza a la plancha o romana":"Seehecht gegrillt oder römisch","Merluza en salsa verde":"Seehecht in grüner Sauce","Mero a la cazuela o plancha":"Zackenbarsch aus der Kasserolle oder gegrillt","Rape a la marinera":"Seeteufel in Meeresfrüchtesauce","Rodaballo al horno o plancha":"Steinbutt gebacken oder gegrillt","Entrecot":"Entrecôte","Solomillo a la pimienta o roquefort":"Filet mit Pfeffer- oder Roquefortsauce","Solomillo a la brasa o foie y PX":"Grillfilet oder Foie & Pedro Ximénez","Paletilla de cabrito al horno":"Gebratene Zicklein-Schulter","Chuletas de cabrito a la plancha":"Gegrillte Zicklein-Koteletts","Chuletón a la brasa":"Holzkohle-gegrilltes Rib-Steak","Cochinillo al horno":"Gebratenes Spanferkel","Brocheta de solomillo al Jerez":"Filetspieß mit Sherry","Lechazo de cabrito":"Junges Zicklein","Pluma ibérica a la parrilla":"Gegrillte Ibérico-Pluma","Solomillo tártaro":"Rinderfilet-Tatar","Escalope milanesa":"Schnitzel Mailänder Art","Rabo de toro en su jugo":"Ochsenschwanz im eigenen Jus","Lomo de cerdo con setas":"Schweinelende mit Pilzen","Pechuga de pollo a la plancha":"Gegrillte Hähnchenbrust","Montadito de lomo":"Mini-Sandwich mit Schweinelende","Montadito de ternera":"Mini-Sandwich mit Rind","Montadito de solomillo":"Mini-Sandwich mit Filet","Montadito de solomillo y foie":"Mini-Sandwich mit Filet und Foie","Fruta":"Frisches Obst","Sorbetes":"Sorbets","Fresas con nata":"Erdbeeren mit Sahne","Helado":"Eis","Arroz con leche":"Milchreis","Natillas":"Vanillecreme","Soufflé con helado":"Soufflé mit Eis","Leche frita con helado":"Frittierte Milchcreme mit Eis","Milhoja con crema o chocolate":"Blätterteig mit Creme oder Schokolade","Tarta de chocolate":"Schokoladenkuchen","Tarta de la abuela":"Großmutters Kuchen","Tarta de manzana":"Apfelkuchen","Tarta de queso":"Käsekuchen","Tarta de turrón":"Nougatkuchen","Teja con helado y chocolate":"Knusperhippe mit Eis und Schokolade","Tocino de cielo":"Spanischer Eigelb-Pudding","Pastel de frutas":"Obstkuchen"},"zh":{"Anchoa en salmuera":"盐渍凤尾鱼","Matrimonio":"凤尾鱼双拼","Bicicleta":"俄式沙拉脆饼","Marinera con anchoa":"凤尾鱼俄式沙拉脆饼","Marinero con boquerón":"腌鲜凤尾鱼俄式沙拉脆饼","Ensaladilla rusa":"俄式土豆沙拉","Almendras":"烤杏仁","Aceitunas":"橄榄","Hueva":"腌制鱼籽","Mojama":"风干金枪鱼里脊","Lata de berberechos":"罐装鸟蛤","Lata de mejillones":"罐装青口","Lata de navajas":"罐装竹蛏","Canapé de salmón":"三文鱼小点","Pulpo":"章鱼","Caballitos":"炸虾天妇罗","Tigres":"酿青口","Buñuelos de bacalao":"鳕鱼炸球","Croquetas de jamón":"火腿可乐饼","Champiñón al ajillo o plancha":"蒜香或铁板蘑菇","Foie a la plancha con pan de cristal":"香煎鹅肝配脆面包","Ostras":"生蚝","Almeja de Carril":"Carril 蛤蜊","Almeja chirla":"小蛤蜊","Coquinas":"楔形蛤","Berberechos":"鸟蛤","Zamburiñas":"小扇贝","Mejillones al vapor":"清蒸青口","Calamar fresco / de potera":"新鲜钓捕鱿鱼","Quisquilla":"本地小虾","Cigala":"海螯虾","Gamba blanca hervida":"水煮白虾","Gamba roja":"红虾","Arroz a banda":"A banda 海鲜高汤饭","Arroz caldero":"穆尔西亚传统鱼汤米饭","Arroz de marisco":"海鲜饭","Arroz y conejo":"兔肉米饭","Arroz de verduras y pollo":"蔬菜鸡肉米饭","Alcachofas con huevos":"洋蓟配鸡蛋","Alcachofas con foie":"洋蓟配鹅肝","Anchoas con pan de cristal":"凤尾鱼配脆面包","Bonito escabechado":"醋渍鲣鱼","Calamar nacional":"西班牙鱿鱼","Calamar a la plancha con champiñón":"铁板鱿鱼配蘑菇","Crujiente de alcachofa":"酥脆洋蓟","Chipirón frito o al ajillo":"炸小鱿鱼或蒜香小鱿鱼","Gambas al ajillo":"蒜香虾","Salmón con bonito en escabeche":"三文鱼配醋渍鲣鱼","Salmón al eneldo":"莳萝三文鱼","Champiñón relleno de ibérico":"伊比利亚火腿酿蘑菇","Embutidos variados":"西班牙冷肉拼盘","Caña de lomo de Jabugo":"哈布戈风干猪里脊","Jamón de Jabugo":"哈布戈火腿","Quesos variados":"精选奶酪拼盘","Caldo de pavo con pelotas":"火鸡肉丸汤","Sopa de pescado o marisco":"鱼汤或海鲜汤","Ensalada mixta":"混合沙拉","Tomate partido con bonito":"番茄配鲣鱼","Tomate y lechuga perdiz":"番茄配 Perdiz 生菜","Tomate con ventresca":"番茄配金枪鱼腹肉","Berenjenas a la crema":"奶油茄子","Champiñón a la plancha o ajillo":"铁板或蒜香蘑菇","Habas salteadas a la murciana":"穆尔西亚风味炒蚕豆","Habas tiernas":"嫩蚕豆","Panaché de verduras con jamón":"什锦蔬菜配火腿","Pastel de puerros con gambas":"韭葱鲜虾咸派","Guiso del día":"每日炖菜","Huevos con patatas":"鸡蛋配土豆","Huevos revueltos Onda":"La Onda 炒蛋","Tortilla de espárragos":"芦笋蛋饼","Tortilla de gambas":"鲜虾蛋饼","Tortilla de jamón o chorizo":"火腿或西班牙香肠蛋饼","Atún de ijada":"金枪鱼腹部精选部位","Chirrete frito":"炸小海鱼","Cocochas a la romana o al pil-pil":"炸鱼下巴或 Pil-Pil 风味","Corvina a la murciana":"穆尔西亚风味石首鱼","Dorada a la sal":"盐焗海鲷","Gallo Pedro frito":"炸圣彼得鱼","Lenguado a la plancha o meunière":"铁板或法式黄油鳎目鱼","Lubina al ajo pescador":"渔夫蒜香海鲈鱼","Merluza a la plancha o romana":"铁板或炸无须鳕","Merluza en salsa verde":"绿汁无须鳕","Mero a la cazuela o plancha":"砂锅或铁板石斑鱼","Rape a la marinera":"海鲜汁安康鱼","Rodaballo al horno o plancha":"烤箱或铁板多宝鱼","Entrecot":"西冷牛排","Solomillo a la pimienta o roquefort":"牛里脊配胡椒汁或蓝纹奶酪汁","Solomillo a la brasa o foie y PX":"炭烤牛里脊或鹅肝配 PX 甜酒汁","Paletilla de cabrito al horno":"烤小山羊肩","Chuletas de cabrito a la plancha":"铁板小山羊排","Chuletón a la brasa":"炭烤大块牛排","Cochinillo al horno":"烤乳猪","Brocheta de solomillo al Jerez":"雪莉酒牛里脊串","Lechazo de cabrito":"嫩小山羊","Pluma ibérica a la parrilla":"炭烤伊比利亚猪梅花肉","Solomillo tártaro":"牛里脊鞑靼","Escalope milanesa":"米兰式炸肉排","Rabo de toro en su jugo":"原汁慢炖牛尾","Lomo de cerdo con setas":"猪里脊配蘑菇","Pechuga de pollo a la plancha":"铁板鸡胸","Montadito de lomo":"猪里脊迷你三明治","Montadito de ternera":"牛肉迷你三明治","Montadito de solomillo":"牛里脊迷你三明治","Montadito de solomillo y foie":"牛里脊鹅肝迷你三明治","Fruta":"新鲜水果","Sorbetes":"雪葩","Fresas con nata":"草莓配奶油","Helado":"冰淇淋","Arroz con leche":"西班牙米布丁","Natillas":"西班牙蛋奶布丁","Soufflé con helado":"舒芙蕾配冰淇淋","Leche frita con helado":"炸牛奶配冰淇淋","Milhoja con crema o chocolate":"千层酥配奶油或巧克力","Tarta de chocolate":"巧克力蛋糕","Tarta de la abuela":"祖母蛋糕","Tarta de manzana":"苹果蛋糕","Tarta de queso":"芝士蛋糕","Tarta de turrón":"牛轧糖蛋糕","Teja con helado y chocolate":"脆瓦片配冰淇淋和巧克力","Tocino de cielo":"西班牙蛋黄焦糖布丁","Pastel de frutas":"水果蛋糕"}};
+
+const allergenNames = {
+es:{gluten:"Gluten",crust:"Crustáceos",egg:"Huevo",fish:"Pescado",peanut:"Cacahuetes",soy:"Soja",milk:"Lácteos",nuts:"Frutos de cáscara",celery:"Apio",mustard:"Mostaza",sesame:"Sésamo",sulfites:"Sulfitos",lupin:"Altramuces",molluscs:"Moluscos"},
+en:{gluten:"Gluten",crust:"Crustaceans",egg:"Egg",fish:"Fish",peanut:"Peanuts",soy:"Soy",milk:"Milk",nuts:"Tree nuts",celery:"Celery",mustard:"Mustard",sesame:"Sesame",sulfites:"Sulphites",lupin:"Lupin",molluscs:"Molluscs"},
+fr:{gluten:"Gluten",crust:"Crustacés",egg:"Œuf",fish:"Poisson",peanut:"Arachides",soy:"Soja",milk:"Lait",nuts:"Fruits à coque",celery:"Céleri",mustard:"Moutarde",sesame:"Sésame",sulfites:"Sulfites",lupin:"Lupin",molluscs:"Mollusques"},
+de:{gluten:"Gluten",crust:"Krebstiere",egg:"Ei",fish:"Fisch",peanut:"Erdnüsse",soy:"Soja",milk:"Milch",nuts:"Schalenfrüchte",celery:"Sellerie",mustard:"Senf",sesame:"Sesam",sulfites:"Sulfite",lupin:"Lupinen",molluscs:"Weichtiere"},
+zh:{gluten:"麸质",crust:"甲壳类",egg:"鸡蛋",fish:"鱼类",peanut:"花生",soy:"大豆",milk:"乳制品",nuts:"坚果",celery:"芹菜",mustard:"芥末",sesame:"芝麻",sulfites:"亚硫酸盐",lupin:"羽扇豆",molluscs:"软体动物"}
+};
+
+const dishDescriptionsByLang={"es":{"Anchoa en salmuera":"Anchoa curada en salmuera, servida con aceite de oliva para potenciar su sabor intenso y salino.","Matrimonio":"Anchoa y boquerón sobre una base sencilla, combinando salinidad, acidez y textura.","Bicicleta":"Rosquilla crujiente con ensaladilla rusa, un clásico murciano ligero y sabroso.","Marinera con anchoa":"Rosquilla crujiente con ensaladilla rusa y anchoa en salmuera.","Marinero con boquerón":"Rosquilla crujiente con ensaladilla rusa y boquerón en vinagre.","Ensaladilla rusa":"Patata, verduras, mayonesa, huevo y pescado, preparada al estilo tradicional.","Almendras":"Almendras tostadas, crujientes y ligeramente saladas.","Aceitunas":"Aceitunas aliñadas con hierbas y aromas mediterráneos.","Hueva":"Hueva curada cortada fina y servida como aperitivo mediterráneo.","Mojama":"Lomo de atún curado en sal, de textura firme y sabor profundo.","Lata de berberechos":"Berberechos en conserva seleccionados, jugosos y con marcado sabor marino.","Lata de mejillones":"Mejillones en conserva seleccionados, carnosos y sabrosos.","Lata de navajas":"Navajas en conserva, tiernas y con intenso sabor a mar.","Canapé de salmón":"Base crujiente con salmón y un acompañamiento suave y fresco.","Pulpo":"Pulpo tierno servido con aliño mediterráneo y aceite de oliva.","Caballitos":"Gambas rebozadas y fritas, crujientes por fuera y jugosas por dentro.","Tigres":"Mejillones rellenos con bechamel sabrosa, empanados y fritos hasta quedar dorados.","Buñuelos de bacalao":"Buñuelos de bacalao ligeros, con interior tierno y exterior crujiente.","Croquetas de jamón":"Croquetas cremosas de jamón, empanadas y fritas al momento.","Champiñón al ajillo o plancha":"Champiñón fresco con ajo y aceite de oliva, o marcado a la plancha.","Foie a la plancha con pan de cristal":"Foie marcado a la plancha acompañado de pan de cristal fino y crujiente.","Ostras":"Ostras frescas servidas al natural para conservar todo su carácter marino.","Almeja de Carril":"Almejas de Carril frescas abiertas suavemente con ajo, aceite y un toque de vino.","Almeja chirla":"Chirlas frescas cocinadas suavemente con ajo y aceite de oliva.","Coquinas":"Coquinas salteadas al momento con ajo y aceite de oliva.","Berberechos":"Berberechos frescos abiertos al calor con un aliño suave.","Zamburiñas":"Zamburiñas marcadas a la plancha con aceite de oliva y ajo.","Mejillones al vapor":"Mejillones frescos abiertos al vapor con limón y aromas mediterráneos.","Calamar fresco / de potera":"Calamar fresco de potera, marcado para mantener una textura firme y jugosa.","Quisquilla":"Quisquilla fresca cocida en su punto para conservar su sabor dulce y marino.","Cigala":"Cigala fresca cocida o marcada suavemente para respetar su carne delicada.","Gamba blanca hervida":"Gamba blanca hervida en su punto y enfriada para conservar textura y sabor.","Gamba roja":"Gamba roja preparada de forma sencilla para destacar su sabor dulce e intenso.","Arroz a banda":"Arroz seco cocinado con fondo concentrado de pescado y marisco.","Arroz caldero":"Arroz tradicional murciano elaborado con caldo intenso de pescado, ñora y ajo.","Arroz de marisco":"Arroz seco con fondo marinero y una selección de mariscos.","Arroz y conejo":"Arroz tradicional con conejo, verduras y un fondo casero aromático.","Arroz de verduras y pollo":"Arroz con pollo y verduras de temporada, cocinado con fondo suave.","Alcachofas con huevos":"Alcachofas tiernas salteadas con huevo, aceite de oliva y un toque de sal.","Alcachofas con foie":"Alcachofas salteadas con foie, combinando notas vegetales y untuosas.","Anchoas con pan de cristal":"Anchoas en salmuera sobre pan de cristal fino y crujiente con aceite de oliva.","Bonito escabechado":"Bonito preparado en escabeche suave con vinagre, aceite y aromas mediterráneos.","Calamar nacional":"Calamar nacional fresco preparado para mantener su textura y sabor natural.","Calamar a la plancha con champiñón":"Calamar marcado a la plancha acompañado de champiñones salteados.","Crujiente de alcachofa":"Láminas de alcachofa doradas hasta quedar finas, ligeras y crujientes.","Chipirón frito o al ajillo":"Chipirones tiernos, fritos o salteados con ajo y aceite de oliva.","Gambas al ajillo":"Gambas salteadas con ajo, aceite de oliva y un ligero toque picante.","Salmón con bonito en escabeche":"Salmón y bonito acompañados de un escabeche suave y aromático.","Salmón al eneldo":"Salmón con eneldo, aceite y un aliño suave que realza su sabor.","Champiñón relleno de ibérico":"Champiñones rellenos de ibérico y horneados hasta integrar sus sabores.","Embutidos variados":"Selección de embutidos curados servidos en tabla para compartir.","Caña de lomo de Jabugo":"Caña de lomo de Jabugo curada y cortada fina.","Jamón de Jabugo":"Jamón de Jabugo cortado fino para apreciar su aroma, grasa y textura.","Quesos variados":"Selección de quesos de distintas intensidades y texturas.","Caldo de pavo con pelotas":"Caldo tradicional de pavo con pelotas de carne, especias y aromas caseros.","Sopa de pescado o marisco":"Sopa caliente elaborada con fondo marinero, verduras y pescado o marisco.","Ensalada mixta":"Lechuga, tomate, cebolla, huevo y guarniciones clásicas con aliño de la casa.","Tomate partido con bonito":"Tomate fresco partido con bonito y aceite de oliva virgen extra.","Tomate y lechuga perdiz":"Tomate fresco con lechuga perdiz, aceite de oliva y aliño suave.","Tomate con ventresca":"Tomate maduro con ventresca de atún y aceite de oliva.","Berenjenas a la crema":"Berenjena cocinada con crema suave y gratinada hasta quedar melosa.","Champiñón a la plancha o ajillo":"Champiñón fresco a la plancha o salteado con ajo y aceite.","Habas salteadas a la murciana":"Habas salteadas al estilo murciano con cebolla, jamón y aceite de oliva.","Habas tiernas":"Habas jóvenes y tiernas servidas de forma sencilla para respetar el producto.","Panaché de verduras con jamón":"Verduras variadas cocinadas al punto y terminadas con jamón.","Pastel de puerros con gambas":"Pastel suave de puerro y gambas con textura cremosa.","Guiso del día":"Guiso casero elaborado según el producto disponible y la cocina del día.","Huevos con patatas":"Huevos recién hechos acompañados de patatas doradas.","Huevos revueltos Onda":"Revuelto de huevo preparado al estilo de la casa, suave y jugoso.","Tortilla de espárragos":"Tortilla recién hecha con espárragos, tierna y jugosa.","Tortilla de gambas":"Tortilla de huevo con gambas, suave y sabrosa.","Tortilla de jamón o chorizo":"Tortilla recién hecha con jamón o chorizo, según elección.","Atún de ijada":"Ijada de atún, una pieza jugosa y sabrosa, cocinada para respetar su grasa natural.","Chirrete frito":"Chirrete ligeramente enharinado y frito hasta quedar crujiente.","Cocochas a la romana o al pil-pil":"Cocochas tiernas, rebozadas a la romana o ligadas lentamente al pil-pil.","Corvina a la murciana":"Corvina con verduras, ajo y aromas mediterráneos al estilo murciano.","Dorada a la sal":"Dorada cocinada en costra de sal para mantener toda su humedad y sabor.","Gallo Pedro frito":"Gallo Pedro frito, de carne blanca y textura delicada.","Lenguado a la plancha o meunière":"Lenguado a la plancha o con mantequilla, limón y perejil al estilo meunière.","Lubina al ajo pescador":"Lubina cocinada con ajo, aceite de oliva y un fondo marinero aromático.","Merluza a la plancha o romana":"Merluza jugosa, a la plancha o rebozada a la romana.","Merluza en salsa verde":"Merluza con salsa verde de ajo, perejil y fondo de pescado.","Mero a la cazuela o plancha":"Mero preparado a la cazuela con fondo marinero o marcado a la plancha.","Rape a la marinera":"Rape cocinado con salsa marinera, marisco y fondo de pescado.","Rodaballo al horno o plancha":"Rodaballo al horno o a la plancha, manteniendo su carne jugosa y firme.","Entrecot":"Entrecot de vacuno marcado a la parrilla y servido al punto elegido.","Solomillo a la pimienta o roquefort":"Solomillo de vacuno con salsa cremosa de pimienta o roquefort.","Solomillo a la brasa o foie y PX":"Solomillo a la brasa o acompañado de foie y reducción de Pedro Ximénez.","Paletilla de cabrito al horno":"Paletilla de cabrito asada lentamente hasta quedar tierna y dorada.","Chuletas de cabrito a la plancha":"Chuletas de cabrito marcadas a la plancha y servidas recién hechas.","Chuletón a la brasa":"Chuletón de vacuno cocinado a la brasa, con exterior tostado y punto interior a elección.","Cochinillo al horno":"Cochinillo asado hasta conseguir carne tierna y piel crujiente.","Brocheta de solomillo al Jerez":"Dados de solomillo en brocheta con una salsa aromática de Jerez.","Lechazo de cabrito":"Cabrito joven cocinado lentamente para conseguir una carne tierna y jugosa.","Pluma ibérica a la parrilla":"Pluma ibérica a la parrilla, jugosa y con su característica infiltración de grasa.","Solomillo tártaro":"Solomillo de vacuno picado y aliñado al momento con yema, mostaza y condimentos clásicos.","Escalope milanesa":"Filete fino empanado y frito hasta quedar dorado y crujiente.","Rabo de toro en su jugo":"Rabo de toro guisado lentamente con verduras y su propio jugo hasta quedar meloso.","Lomo de cerdo con setas":"Lomo de cerdo acompañado de setas salteadas y jugo de cocción.","Pechuga de pollo a la plancha":"Pechuga de pollo marcada a la plancha, ligera y jugosa.","Montadito de lomo":"Pan crujiente relleno de lomo caliente recién hecho.","Montadito de ternera":"Pan crujiente con ternera tierna a la plancha.","Montadito de solomillo":"Pan crujiente con solomillo de vacuno recién marcado.","Montadito de solomillo y foie":"Pan crujiente con solomillo y foie, intenso y untuoso.","Fruta":"Fruta fresca de temporada preparada al momento.","Sorbetes":"Sorbete frío y refrescante elaborado con fruta.","Fresas con nata":"Fresas frescas acompañadas de nata cremosa.","Helado":"Selección de helados cremosos servidos en su punto.","Arroz con leche":"Arroz cocido lentamente con leche, azúcar, canela y aromas tradicionales.","Natillas":"Crema suave de leche, huevo, azúcar y vainilla.","Soufflé con helado":"Soufflé caliente acompañado de helado para crear contraste de temperaturas.","Leche frita con helado":"Leche frita cremosa y dorada acompañada de helado.","Milhoja con crema o chocolate":"Capas crujientes de hojaldre rellenas de crema o chocolate.","Tarta de chocolate":"Tarta de chocolate de sabor intenso y textura melosa.","Tarta de la abuela":"Tarta tradicional de galleta, crema y chocolate.","Tarta de manzana":"Tarta horneada con manzana sobre una base dulce y suave.","Tarta de queso":"Tarta de queso cremosa, equilibrada y de sabor suave.","Tarta de turrón":"Tarta cremosa de turrón con notas de almendra.","Teja con helado y chocolate":"Teja fina y crujiente acompañada de helado y chocolate.","Tocino de cielo":"Postre tradicional elaborado con yema y almíbar, de textura suave.","Pastel de frutas":"Pastel dulce terminado con una selección de frutas."},"en":{"Anchoa en salmuera":"{DISH} is prepared as a traditional appetiser with carefully selected ingredients, balancing texture and flavour in a clean, elegant bite.","Matrimonio":"{DISH} is prepared as a traditional appetiser with carefully selected ingredients, balancing texture and flavour in a clean, elegant bite.","Bicicleta":"{DISH} is prepared as a traditional appetiser with carefully selected ingredients, balancing texture and flavour in a clean, elegant bite.","Marinera con anchoa":"{DISH} is prepared as a traditional appetiser with carefully selected ingredients, balancing texture and flavour in a clean, elegant bite.","Marinero con boquerón":"{DISH} is prepared as a traditional appetiser with carefully selected ingredients, balancing texture and flavour in a clean, elegant bite.","Ensaladilla rusa":"{DISH} is prepared as a traditional appetiser with carefully selected ingredients, balancing texture and flavour in a clean, elegant bite.","Almendras":"{DISH} is prepared as a traditional appetiser with carefully selected ingredients, balancing texture and flavour in a clean, elegant bite.","Aceitunas":"{DISH} is prepared as a traditional appetiser with carefully selected ingredients, balancing texture and flavour in a clean, elegant bite.","Hueva":"{DISH} is prepared as a traditional appetiser with carefully selected ingredients, balancing texture and flavour in a clean, elegant bite.","Mojama":"{DISH} is prepared as a traditional appetiser with carefully selected ingredients, balancing texture and flavour in a clean, elegant bite.","Lata de berberechos":"{DISH} is prepared as a traditional appetiser with carefully selected ingredients, balancing texture and flavour in a clean, elegant bite.","Lata de mejillones":"{DISH} is prepared as a traditional appetiser with carefully selected ingredients, balancing texture and flavour in a clean, elegant bite.","Lata de navajas":"{DISH} is prepared as a traditional appetiser with carefully selected ingredients, balancing texture and flavour in a clean, elegant bite.","Canapé de salmón":"{DISH} is prepared as a traditional appetiser with carefully selected ingredients, balancing texture and flavour in a clean, elegant bite.","Pulpo":"{DISH} is prepared as a traditional appetiser with carefully selected ingredients, balancing texture and flavour in a clean, elegant bite.","Caballitos":"{DISH} is prepared as a traditional appetiser with carefully selected ingredients, balancing texture and flavour in a clean, elegant bite.","Tigres":"{DISH} is prepared as a traditional appetiser with carefully selected ingredients, balancing texture and flavour in a clean, elegant bite.","Buñuelos de bacalao":"{DISH} is prepared as a traditional appetiser with carefully selected ingredients, balancing texture and flavour in a clean, elegant bite.","Croquetas de jamón":"{DISH} is prepared as a traditional appetiser with carefully selected ingredients, balancing texture and flavour in a clean, elegant bite.","Champiñón al ajillo o plancha":"{DISH} is prepared as a traditional appetiser with carefully selected ingredients, balancing texture and flavour in a clean, elegant bite.","Foie a la plancha con pan de cristal":"{DISH} is prepared as a traditional appetiser with carefully selected ingredients, balancing texture and flavour in a clean, elegant bite.","Ostras":"{DISH} is selected for freshness and prepared with minimal intervention to preserve its natural sweetness, texture and unmistakable taste of the sea.","Almeja de Carril":"{DISH} is selected for freshness and prepared with minimal intervention to preserve its natural sweetness, texture and unmistakable taste of the sea.","Almeja chirla":"{DISH} is selected for freshness and prepared with minimal intervention to preserve its natural sweetness, texture and unmistakable taste of the sea.","Coquinas":"{DISH} is selected for freshness and prepared with minimal intervention to preserve its natural sweetness, texture and unmistakable taste of the sea.","Berberechos":"{DISH} is selected for freshness and prepared with minimal intervention to preserve its natural sweetness, texture and unmistakable taste of the sea.","Zamburiñas":"{DISH} is selected for freshness and prepared with minimal intervention to preserve its natural sweetness, texture and unmistakable taste of the sea.","Mejillones al vapor":"{DISH} is selected for freshness and prepared with minimal intervention to preserve its natural sweetness, texture and unmistakable taste of the sea.","Calamar fresco / de potera":"Fresh line-caught squid with a firm yet tender texture and clean sea flavour, simply prepared to let the product speak for itself.","Quisquilla":"{DISH} is selected for freshness and prepared with minimal intervention to preserve its natural sweetness, texture and unmistakable taste of the sea.","Cigala":"{DISH} is selected for freshness and prepared with minimal intervention to preserve its natural sweetness, texture and unmistakable taste of the sea.","Gamba blanca hervida":"White prawns gently boiled and cooled at the right moment to preserve their juicy texture, natural sweetness and delicate marine flavour.","Gamba roja":"{DISH} is selected for freshness and prepared with minimal intervention to preserve its natural sweetness, texture and unmistakable taste of the sea.","Arroz a banda":"{DISH} is cooked to order with a carefully prepared stock so the rice absorbs deep Mediterranean flavour while preserving its traditional texture.","Arroz caldero":"Traditional Murcian rice prepared with an intense fish broth, ñora pepper and garlic, inspired by the cooking of the Mar Menor.","Arroz de marisco":"{DISH} is cooked to order with a carefully prepared stock so the rice absorbs deep Mediterranean flavour while preserving its traditional texture.","Arroz y conejo":"{DISH} is cooked to order with a carefully prepared stock so the rice absorbs deep Mediterranean flavour while preserving its traditional texture.","Arroz de verduras y pollo":"{DISH} is cooked to order with a carefully prepared stock so the rice absorbs deep Mediterranean flavour while preserving its traditional texture.","Alcachofas con huevos":"{DISH} is prepared to order with carefully selected ingredients, combining traditional Mediterranean cooking with a balanced presentation.","Alcachofas con foie":"{DISH} is prepared to order with carefully selected ingredients, combining traditional Mediterranean cooking with a balanced presentation.","Anchoas con pan de cristal":"{DISH} is prepared to order with carefully selected ingredients, combining traditional Mediterranean cooking with a balanced presentation.","Bonito escabechado":"{DISH} is prepared to order with carefully selected ingredients, combining traditional Mediterranean cooking with a balanced presentation.","Calamar nacional":"{DISH} is prepared to order with carefully selected ingredients, combining traditional Mediterranean cooking with a balanced presentation.","Calamar a la plancha con champiñón":"{DISH} is prepared to order with carefully selected ingredients, combining traditional Mediterranean cooking with a balanced presentation.","Crujiente de alcachofa":"{DISH} is prepared to order with carefully selected ingredients, combining traditional Mediterranean cooking with a balanced presentation.","Chipirón frito o al ajillo":"{DISH} is prepared to order with carefully selected ingredients, combining traditional Mediterranean cooking with a balanced presentation.","Gambas al ajillo":"{DISH} is prepared to order with carefully selected ingredients, combining traditional Mediterranean cooking with a balanced presentation.","Salmón con bonito en escabeche":"{DISH} is prepared to order with carefully selected ingredients, combining traditional Mediterranean cooking with a balanced presentation.","Salmón al eneldo":"{DISH} is prepared to order with carefully selected ingredients, combining traditional Mediterranean cooking with a balanced presentation.","Champiñón relleno de ibérico":"{DISH} is prepared to order with carefully selected ingredients, combining traditional Mediterranean cooking with a balanced presentation.","Embutidos variados":"{DISH} is prepared to order with carefully selected ingredients, combining traditional Mediterranean cooking with a balanced presentation.","Caña de lomo de Jabugo":"{DISH} is prepared to order with carefully selected ingredients, combining traditional Mediterranean cooking with a balanced presentation.","Jamón de Jabugo":"{DISH} is prepared to order with carefully selected ingredients, combining traditional Mediterranean cooking with a balanced presentation.","Quesos variados":"{DISH} is prepared to order with carefully selected ingredients, combining traditional Mediterranean cooking with a balanced presentation.","Caldo de pavo con pelotas":"{DISH} combines fresh produce with a simple traditional preparation that respects the natural flavour and texture of each ingredient.","Sopa de pescado o marisco":"{DISH} combines fresh produce with a simple traditional preparation that respects the natural flavour and texture of each ingredient.","Ensalada mixta":"{DISH} combines fresh produce with a simple traditional preparation that respects the natural flavour and texture of each ingredient.","Tomate partido con bonito":"{DISH} combines fresh produce with a simple traditional preparation that respects the natural flavour and texture of each ingredient.","Tomate y lechuga perdiz":"{DISH} combines fresh produce with a simple traditional preparation that respects the natural flavour and texture of each ingredient.","Tomate con ventresca":"{DISH} combines fresh produce with a simple traditional preparation that respects the natural flavour and texture of each ingredient.","Berenjenas a la crema":"{DISH} combines fresh produce with a simple traditional preparation that respects the natural flavour and texture of each ingredient.","Champiñón a la plancha o ajillo":"{DISH} combines fresh produce with a simple traditional preparation that respects the natural flavour and texture of each ingredient.","Habas salteadas a la murciana":"{DISH} combines fresh produce with a simple traditional preparation that respects the natural flavour and texture of each ingredient.","Habas tiernas":"{DISH} combines fresh produce with a simple traditional preparation that respects the natural flavour and texture of each ingredient.","Panaché de verduras con jamón":"{DISH} combines fresh produce with a simple traditional preparation that respects the natural flavour and texture of each ingredient.","Pastel de puerros con gambas":"{DISH} combines fresh produce with a simple traditional preparation that respects the natural flavour and texture of each ingredient.","Guiso del día":"{DISH} follows a comforting traditional style, prepared patiently so the flavours come together naturally and the texture remains generous.","Huevos con patatas":"{DISH} follows a comforting traditional style, prepared patiently so the flavours come together naturally and the texture remains generous.","Huevos revueltos Onda":"{DISH} follows a comforting traditional style, prepared patiently so the flavours come together naturally and the texture remains generous.","Tortilla de espárragos":"{DISH} follows a comforting traditional style, prepared patiently so the flavours come together naturally and the texture remains generous.","Tortilla de gambas":"{DISH} follows a comforting traditional style, prepared patiently so the flavours come together naturally and the texture remains generous.","Tortilla de jamón o chorizo":"{DISH} follows a comforting traditional style, prepared patiently so the flavours come together naturally and the texture remains generous.","Atún de ijada":"{DISH} is prepared to highlight the character of the fish, preserving juiciness and a delicate Mediterranean sea flavour.","Chirrete frito":"{DISH} is prepared to highlight the character of the fish, preserving juiciness and a delicate Mediterranean sea flavour.","Cocochas a la romana o al pil-pil":"{DISH} is prepared to highlight the character of the fish, preserving juiciness and a delicate Mediterranean sea flavour.","Corvina a la murciana":"{DISH} is prepared to highlight the character of the fish, preserving juiciness and a delicate Mediterranean sea flavour.","Dorada a la sal":"{DISH} is prepared to highlight the character of the fish, preserving juiciness and a delicate Mediterranean sea flavour.","Gallo Pedro frito":"{DISH} is prepared to highlight the character of the fish, preserving juiciness and a delicate Mediterranean sea flavour.","Lenguado a la plancha o meunière":"{DISH} is prepared to highlight the character of the fish, preserving juiciness and a delicate Mediterranean sea flavour.","Lubina al ajo pescador":"{DISH} is prepared to highlight the character of the fish, preserving juiciness and a delicate Mediterranean sea flavour.","Merluza a la plancha o romana":"{DISH} is prepared to highlight the character of the fish, preserving juiciness and a delicate Mediterranean sea flavour.","Merluza en salsa verde":"{DISH} is prepared to highlight the character of the fish, preserving juiciness and a delicate Mediterranean sea flavour.","Mero a la cazuela o plancha":"{DISH} is prepared to highlight the character of the fish, preserving juiciness and a delicate Mediterranean sea flavour.","Rape a la marinera":"{DISH} is prepared to highlight the character of the fish, preserving juiciness and a delicate Mediterranean sea flavour.","Rodaballo al horno o plancha":"{DISH} is prepared to highlight the character of the fish, preserving juiciness and a delicate Mediterranean sea flavour.","Entrecot":"{DISH} is cooked to order with special attention to temperature, tenderness and flavour, respecting the character of the selected cut.","Solomillo a la pimienta o roquefort":"{DISH} is cooked to order with special attention to temperature, tenderness and flavour, respecting the character of the selected cut.","Solomillo a la brasa o foie y PX":"{DISH} is cooked to order with special attention to temperature, tenderness and flavour, respecting the character of the selected cut.","Paletilla de cabrito al horno":"{DISH} is cooked to order with special attention to temperature, tenderness and flavour, respecting the character of the selected cut.","Chuletas de cabrito a la plancha":"{DISH} is cooked to order with special attention to temperature, tenderness and flavour, respecting the character of the selected cut.","Chuletón a la brasa":"A generous cut of beef grilled over charcoal, deeply seared outside and cooked inside to your preferred doneness.","Cochinillo al horno":"{DISH} is cooked to order with special attention to temperature, tenderness and flavour, respecting the character of the selected cut.","Brocheta de solomillo al Jerez":"{DISH} is cooked to order with special attention to temperature, tenderness and flavour, respecting the character of the selected cut.","Lechazo de cabrito":"{DISH} is cooked to order with special attention to temperature, tenderness and flavour, respecting the character of the selected cut.","Pluma ibérica a la parrilla":"{DISH} is cooked to order with special attention to temperature, tenderness and flavour, respecting the character of the selected cut.","Solomillo tártaro":"{DISH} is cooked to order with special attention to temperature, tenderness and flavour, respecting the character of the selected cut.","Escalope milanesa":"{DISH} is cooked to order with special attention to temperature, tenderness and flavour, respecting the character of the selected cut.","Rabo de toro en su jugo":"{DISH} is cooked to order with special attention to temperature, tenderness and flavour, respecting the character of the selected cut.","Lomo de cerdo con setas":"{DISH} is cooked to order with special attention to temperature, tenderness and flavour, respecting the character of the selected cut.","Pechuga de pollo a la plancha":"{DISH} is cooked to order with special attention to temperature, tenderness and flavour, respecting the character of the selected cut.","Montadito de lomo":"{DISH} is served in crisp bread with a freshly cooked filling, creating a simple, flavourful and satisfying bite.","Montadito de ternera":"{DISH} is served in crisp bread with a freshly cooked filling, creating a simple, flavourful and satisfying bite.","Montadito de solomillo":"{DISH} is served in crisp bread with a freshly cooked filling, creating a simple, flavourful and satisfying bite.","Montadito de solomillo y foie":"{DISH} is served in crisp bread with a freshly cooked filling, creating a simple, flavourful and satisfying bite.","Fruta":"{DISH} is a house-style dessert with balanced sweetness and carefully considered texture, designed to finish the meal on a delicate note.","Sorbetes":"{DISH} is a house-style dessert with balanced sweetness and carefully considered texture, designed to finish the meal on a delicate note.","Fresas con nata":"{DISH} is a house-style dessert with balanced sweetness and carefully considered texture, designed to finish the meal on a delicate note.","Helado":"{DISH} is a house-style dessert with balanced sweetness and carefully considered texture, designed to finish the meal on a delicate note.","Arroz con leche":"{DISH} is a house-style dessert with balanced sweetness and carefully considered texture, designed to finish the meal on a delicate note.","Natillas":"{DISH} is a house-style dessert with balanced sweetness and carefully considered texture, designed to finish the meal on a delicate note.","Soufflé con helado":"{DISH} is a house-style dessert with balanced sweetness and carefully considered texture, designed to finish the meal on a delicate note.","Leche frita con helado":"{DISH} is a house-style dessert with balanced sweetness and carefully considered texture, designed to finish the meal on a delicate note.","Milhoja con crema o chocolate":"{DISH} is a house-style dessert with balanced sweetness and carefully considered texture, designed to finish the meal on a delicate note.","Tarta de chocolate":"{DISH} is a house-style dessert with balanced sweetness and carefully considered texture, designed to finish the meal on a delicate note.","Tarta de la abuela":"{DISH} is a house-style dessert with balanced sweetness and carefully considered texture, designed to finish the meal on a delicate note.","Tarta de manzana":"{DISH} is a house-style dessert with balanced sweetness and carefully considered texture, designed to finish the meal on a delicate note.","Tarta de queso":"Creamy cheesecake with a smooth texture, balanced sweetness and a delicate dairy finish.","Tarta de turrón":"{DISH} is a house-style dessert with balanced sweetness and carefully considered texture, designed to finish the meal on a delicate note.","Teja con helado y chocolate":"{DISH} is a house-style dessert with balanced sweetness and carefully considered texture, designed to finish the meal on a delicate note.","Tocino de cielo":"{DISH} is a house-style dessert with balanced sweetness and carefully considered texture, designed to finish the meal on a delicate note.","Pastel de frutas":"{DISH} is a house-style dessert with balanced sweetness and carefully considered texture, designed to finish the meal on a delicate note."},"fr":{"Anchoa en salmuera":"{DISH} est préparé comme un apéritif traditionnel avec des ingrédients soigneusement sélectionnés, en recherchant équilibre, texture et saveur.","Matrimonio":"{DISH} est préparé comme un apéritif traditionnel avec des ingrédients soigneusement sélectionnés, en recherchant équilibre, texture et saveur.","Bicicleta":"{DISH} est préparé comme un apéritif traditionnel avec des ingrédients soigneusement sélectionnés, en recherchant équilibre, texture et saveur.","Marinera con anchoa":"{DISH} est préparé comme un apéritif traditionnel avec des ingrédients soigneusement sélectionnés, en recherchant équilibre, texture et saveur.","Marinero con boquerón":"{DISH} est préparé comme un apéritif traditionnel avec des ingrédients soigneusement sélectionnés, en recherchant équilibre, texture et saveur.","Ensaladilla rusa":"{DISH} est préparé comme un apéritif traditionnel avec des ingrédients soigneusement sélectionnés, en recherchant équilibre, texture et saveur.","Almendras":"{DISH} est préparé comme un apéritif traditionnel avec des ingrédients soigneusement sélectionnés, en recherchant équilibre, texture et saveur.","Aceitunas":"{DISH} est préparé comme un apéritif traditionnel avec des ingrédients soigneusement sélectionnés, en recherchant équilibre, texture et saveur.","Hueva":"{DISH} est préparé comme un apéritif traditionnel avec des ingrédients soigneusement sélectionnés, en recherchant équilibre, texture et saveur.","Mojama":"{DISH} est préparé comme un apéritif traditionnel avec des ingrédients soigneusement sélectionnés, en recherchant équilibre, texture et saveur.","Lata de berberechos":"{DISH} est préparé comme un apéritif traditionnel avec des ingrédients soigneusement sélectionnés, en recherchant équilibre, texture et saveur.","Lata de mejillones":"{DISH} est préparé comme un apéritif traditionnel avec des ingrédients soigneusement sélectionnés, en recherchant équilibre, texture et saveur.","Lata de navajas":"{DISH} est préparé comme un apéritif traditionnel avec des ingrédients soigneusement sélectionnés, en recherchant équilibre, texture et saveur.","Canapé de salmón":"{DISH} est préparé comme un apéritif traditionnel avec des ingrédients soigneusement sélectionnés, en recherchant équilibre, texture et saveur.","Pulpo":"{DISH} est préparé comme un apéritif traditionnel avec des ingrédients soigneusement sélectionnés, en recherchant équilibre, texture et saveur.","Caballitos":"{DISH} est préparé comme un apéritif traditionnel avec des ingrédients soigneusement sélectionnés, en recherchant équilibre, texture et saveur.","Tigres":"{DISH} est préparé comme un apéritif traditionnel avec des ingrédients soigneusement sélectionnés, en recherchant équilibre, texture et saveur.","Buñuelos de bacalao":"{DISH} est préparé comme un apéritif traditionnel avec des ingrédients soigneusement sélectionnés, en recherchant équilibre, texture et saveur.","Croquetas de jamón":"{DISH} est préparé comme un apéritif traditionnel avec des ingrédients soigneusement sélectionnés, en recherchant équilibre, texture et saveur.","Champiñón al ajillo o plancha":"{DISH} est préparé comme un apéritif traditionnel avec des ingrédients soigneusement sélectionnés, en recherchant équilibre, texture et saveur.","Foie a la plancha con pan de cristal":"{DISH} est préparé comme un apéritif traditionnel avec des ingrédients soigneusement sélectionnés, en recherchant équilibre, texture et saveur.","Ostras":"{DISH} est sélectionné pour sa fraîcheur et préparé avec un minimum d’intervention afin de préserver sa douceur, sa texture et son goût marin.","Almeja de Carril":"{DISH} est sélectionné pour sa fraîcheur et préparé avec un minimum d’intervention afin de préserver sa douceur, sa texture et son goût marin.","Almeja chirla":"{DISH} est sélectionné pour sa fraîcheur et préparé avec un minimum d’intervention afin de préserver sa douceur, sa texture et son goût marin.","Coquinas":"{DISH} est sélectionné pour sa fraîcheur et préparé avec un minimum d’intervention afin de préserver sa douceur, sa texture et son goût marin.","Berberechos":"{DISH} est sélectionné pour sa fraîcheur et préparé avec un minimum d’intervention afin de préserver sa douceur, sa texture et son goût marin.","Zamburiñas":"{DISH} est sélectionné pour sa fraîcheur et préparé avec un minimum d’intervention afin de préserver sa douceur, sa texture et son goût marin.","Mejillones al vapor":"{DISH} est sélectionné pour sa fraîcheur et préparé avec un minimum d’intervention afin de préserver sa douceur, sa texture et son goût marin.","Calamar fresco / de potera":"Calamar frais pêché à la ligne, à la texture ferme et tendre, préparé simplement pour préserver toute sa saveur marine.","Quisquilla":"{DISH} est sélectionné pour sa fraîcheur et préparé avec un minimum d’intervention afin de préserver sa douceur, sa texture et son goût marin.","Cigala":"{DISH} est sélectionné pour sa fraîcheur et préparé avec un minimum d’intervention afin de préserver sa douceur, sa texture et son goût marin.","Gamba blanca hervida":"Crevettes blanches délicatement bouillies puis refroidies au bon moment afin de préserver leur texture juteuse et leur douceur.","Gamba roja":"{DISH} est sélectionné pour sa fraîcheur et préparé avec un minimum d’intervention afin de préserver sa douceur, sa texture et son goût marin.","Arroz a banda":"{DISH} est cuisiné à la commande avec un bouillon soigneusement préparé afin que le riz absorbe toute la profondeur des saveurs méditerranéennes.","Arroz caldero":"Riz traditionnel murcien préparé avec un bouillon de poisson intense, de la ñora et de l’ail, inspiré de la cuisine du Mar Menor.","Arroz de marisco":"{DISH} est cuisiné à la commande avec un bouillon soigneusement préparé afin que le riz absorbe toute la profondeur des saveurs méditerranéennes.","Arroz y conejo":"{DISH} est cuisiné à la commande avec un bouillon soigneusement préparé afin que le riz absorbe toute la profondeur des saveurs méditerranéennes.","Arroz de verduras y pollo":"{DISH} est cuisiné à la commande avec un bouillon soigneusement préparé afin que le riz absorbe toute la profondeur des saveurs méditerranéennes.","Alcachofas con huevos":"{DISH} est préparé à la minute avec des ingrédients sélectionnés, dans un esprit méditerranéen traditionnel et équilibré.","Alcachofas con foie":"{DISH} est préparé à la minute avec des ingrédients sélectionnés, dans un esprit méditerranéen traditionnel et équilibré.","Anchoas con pan de cristal":"{DISH} est préparé à la minute avec des ingrédients sélectionnés, dans un esprit méditerranéen traditionnel et équilibré.","Bonito escabechado":"{DISH} est préparé à la minute avec des ingrédients sélectionnés, dans un esprit méditerranéen traditionnel et équilibré.","Calamar nacional":"{DISH} est préparé à la minute avec des ingrédients sélectionnés, dans un esprit méditerranéen traditionnel et équilibré.","Calamar a la plancha con champiñón":"{DISH} est préparé à la minute avec des ingrédients sélectionnés, dans un esprit méditerranéen traditionnel et équilibré.","Crujiente de alcachofa":"{DISH} est préparé à la minute avec des ingrédients sélectionnés, dans un esprit méditerranéen traditionnel et équilibré.","Chipirón frito o al ajillo":"{DISH} est préparé à la minute avec des ingrédients sélectionnés, dans un esprit méditerranéen traditionnel et équilibré.","Gambas al ajillo":"{DISH} est préparé à la minute avec des ingrédients sélectionnés, dans un esprit méditerranéen traditionnel et équilibré.","Salmón con bonito en escabeche":"{DISH} est préparé à la minute avec des ingrédients sélectionnés, dans un esprit méditerranéen traditionnel et équilibré.","Salmón al eneldo":"{DISH} est préparé à la minute avec des ingrédients sélectionnés, dans un esprit méditerranéen traditionnel et équilibré.","Champiñón relleno de ibérico":"{DISH} est préparé à la minute avec des ingrédients sélectionnés, dans un esprit méditerranéen traditionnel et équilibré.","Embutidos variados":"{DISH} est préparé à la minute avec des ingrédients sélectionnés, dans un esprit méditerranéen traditionnel et équilibré.","Caña de lomo de Jabugo":"{DISH} est préparé à la minute avec des ingrédients sélectionnés, dans un esprit méditerranéen traditionnel et équilibré.","Jamón de Jabugo":"{DISH} est préparé à la minute avec des ingrédients sélectionnés, dans un esprit méditerranéen traditionnel et équilibré.","Quesos variados":"{DISH} est préparé à la minute avec des ingrédients sélectionnés, dans un esprit méditerranéen traditionnel et équilibré.","Caldo de pavo con pelotas":"{DISH} associe des produits frais à une préparation simple et traditionnelle qui respecte la saveur et la texture naturelles de chaque ingrédient.","Sopa de pescado o marisco":"{DISH} associe des produits frais à une préparation simple et traditionnelle qui respecte la saveur et la texture naturelles de chaque ingrédient.","Ensalada mixta":"{DISH} associe des produits frais à une préparation simple et traditionnelle qui respecte la saveur et la texture naturelles de chaque ingrédient.","Tomate partido con bonito":"{DISH} associe des produits frais à une préparation simple et traditionnelle qui respecte la saveur et la texture naturelles de chaque ingrédient.","Tomate y lechuga perdiz":"{DISH} associe des produits frais à une préparation simple et traditionnelle qui respecte la saveur et la texture naturelles de chaque ingrédient.","Tomate con ventresca":"{DISH} associe des produits frais à une préparation simple et traditionnelle qui respecte la saveur et la texture naturelles de chaque ingrédient.","Berenjenas a la crema":"{DISH} associe des produits frais à une préparation simple et traditionnelle qui respecte la saveur et la texture naturelles de chaque ingrédient.","Champiñón a la plancha o ajillo":"{DISH} associe des produits frais à une préparation simple et traditionnelle qui respecte la saveur et la texture naturelles de chaque ingrédient.","Habas salteadas a la murciana":"{DISH} associe des produits frais à une préparation simple et traditionnelle qui respecte la saveur et la texture naturelles de chaque ingrédient.","Habas tiernas":"{DISH} associe des produits frais à une préparation simple et traditionnelle qui respecte la saveur et la texture naturelles de chaque ingrédient.","Panaché de verduras con jamón":"{DISH} associe des produits frais à une préparation simple et traditionnelle qui respecte la saveur et la texture naturelles de chaque ingrédient.","Pastel de puerros con gambas":"{DISH} associe des produits frais à une préparation simple et traditionnelle qui respecte la saveur et la texture naturelles de chaque ingrédient.","Guiso del día":"{DISH} est préparé dans un esprit traditionnel et réconfortant, avec une cuisson patiente permettant aux saveurs de se fondre naturellement.","Huevos con patatas":"{DISH} est préparé dans un esprit traditionnel et réconfortant, avec une cuisson patiente permettant aux saveurs de se fondre naturellement.","Huevos revueltos Onda":"{DISH} est préparé dans un esprit traditionnel et réconfortant, avec une cuisson patiente permettant aux saveurs de se fondre naturellement.","Tortilla de espárragos":"{DISH} est préparé dans un esprit traditionnel et réconfortant, avec une cuisson patiente permettant aux saveurs de se fondre naturellement.","Tortilla de gambas":"{DISH} est préparé dans un esprit traditionnel et réconfortant, avec une cuisson patiente permettant aux saveurs de se fondre naturellement.","Tortilla de jamón o chorizo":"{DISH} est préparé dans un esprit traditionnel et réconfortant, avec une cuisson patiente permettant aux saveurs de se fondre naturellement.","Atún de ijada":"{DISH} est préparé pour mettre en valeur le caractère du poisson, en préservant son moelleux et toute la finesse de sa saveur marine.","Chirrete frito":"{DISH} est préparé pour mettre en valeur le caractère du poisson, en préservant son moelleux et toute la finesse de sa saveur marine.","Cocochas a la romana o al pil-pil":"{DISH} est préparé pour mettre en valeur le caractère du poisson, en préservant son moelleux et toute la finesse de sa saveur marine.","Corvina a la murciana":"{DISH} est préparé pour mettre en valeur le caractère du poisson, en préservant son moelleux et toute la finesse de sa saveur marine.","Dorada a la sal":"{DISH} est préparé pour mettre en valeur le caractère du poisson, en préservant son moelleux et toute la finesse de sa saveur marine.","Gallo Pedro frito":"{DISH} est préparé pour mettre en valeur le caractère du poisson, en préservant son moelleux et toute la finesse de sa saveur marine.","Lenguado a la plancha o meunière":"{DISH} est préparé pour mettre en valeur le caractère du poisson, en préservant son moelleux et toute la finesse de sa saveur marine.","Lubina al ajo pescador":"{DISH} est préparé pour mettre en valeur le caractère du poisson, en préservant son moelleux et toute la finesse de sa saveur marine.","Merluza a la plancha o romana":"{DISH} est préparé pour mettre en valeur le caractère du poisson, en préservant son moelleux et toute la finesse de sa saveur marine.","Merluza en salsa verde":"{DISH} est préparé pour mettre en valeur le caractère du poisson, en préservant son moelleux et toute la finesse de sa saveur marine.","Mero a la cazuela o plancha":"{DISH} est préparé pour mettre en valeur le caractère du poisson, en préservant son moelleux et toute la finesse de sa saveur marine.","Rape a la marinera":"{DISH} est préparé pour mettre en valeur le caractère du poisson, en préservant son moelleux et toute la finesse de sa saveur marine.","Rodaballo al horno o plancha":"{DISH} est préparé pour mettre en valeur le caractère du poisson, en préservant son moelleux et toute la finesse de sa saveur marine.","Entrecot":"{DISH} est cuisiné à la demande avec une attention particulière portée à la cuisson, à la tendreté et au caractère de la pièce sélectionnée.","Solomillo a la pimienta o roquefort":"{DISH} est cuisiné à la demande avec une attention particulière portée à la cuisson, à la tendreté et au caractère de la pièce sélectionnée.","Solomillo a la brasa o foie y PX":"{DISH} est cuisiné à la demande avec une attention particulière portée à la cuisson, à la tendreté et au caractère de la pièce sélectionnée.","Paletilla de cabrito al horno":"{DISH} est cuisiné à la demande avec une attention particulière portée à la cuisson, à la tendreté et au caractère de la pièce sélectionnée.","Chuletas de cabrito a la plancha":"{DISH} est cuisiné à la demande avec une attention particulière portée à la cuisson, à la tendreté et au caractère de la pièce sélectionnée.","Chuletón a la brasa":"Une généreuse côte de bœuf cuite à la braise, saisie à l’extérieur et servie avec la cuisson de votre choix.","Cochinillo al horno":"{DISH} est cuisiné à la demande avec une attention particulière portée à la cuisson, à la tendreté et au caractère de la pièce sélectionnée.","Brocheta de solomillo al Jerez":"{DISH} est cuisiné à la demande avec une attention particulière portée à la cuisson, à la tendreté et au caractère de la pièce sélectionnée.","Lechazo de cabrito":"{DISH} est cuisiné à la demande avec une attention particulière portée à la cuisson, à la tendreté et au caractère de la pièce sélectionnée.","Pluma ibérica a la parrilla":"{DISH} est cuisiné à la demande avec une attention particulière portée à la cuisson, à la tendreté et au caractère de la pièce sélectionnée.","Solomillo tártaro":"{DISH} est cuisiné à la demande avec une attention particulière portée à la cuisson, à la tendreté et au caractère de la pièce sélectionnée.","Escalope milanesa":"{DISH} est cuisiné à la demande avec une attention particulière portée à la cuisson, à la tendreté et au caractère de la pièce sélectionnée.","Rabo de toro en su jugo":"{DISH} est cuisiné à la demande avec une attention particulière portée à la cuisson, à la tendreté et au caractère de la pièce sélectionnée.","Lomo de cerdo con setas":"{DISH} est cuisiné à la demande avec une attention particulière portée à la cuisson, à la tendreté et au caractère de la pièce sélectionnée.","Pechuga de pollo a la plancha":"{DISH} est cuisiné à la demande avec une attention particulière portée à la cuisson, à la tendreté et au caractère de la pièce sélectionnée.","Montadito de lomo":"{DISH} est servi dans un pain croustillant avec une garniture préparée à la minute, pour une bouchée simple, généreuse et savoureuse.","Montadito de ternera":"{DISH} est servi dans un pain croustillant avec une garniture préparée à la minute, pour une bouchée simple, généreuse et savoureuse.","Montadito de solomillo":"{DISH} est servi dans un pain croustillant avec une garniture préparée à la minute, pour une bouchée simple, généreuse et savoureuse.","Montadito de solomillo y foie":"{DISH} est servi dans un pain croustillant avec une garniture préparée à la minute, pour une bouchée simple, généreuse et savoureuse.","Fruta":"{DISH} est un dessert dans l’esprit de la maison, à la douceur équilibrée et à la texture soignée, pensé pour terminer le repas avec délicatesse.","Sorbetes":"{DISH} est un dessert dans l’esprit de la maison, à la douceur équilibrée et à la texture soignée, pensé pour terminer le repas avec délicatesse.","Fresas con nata":"{DISH} est un dessert dans l’esprit de la maison, à la douceur équilibrée et à la texture soignée, pensé pour terminer le repas avec délicatesse.","Helado":"{DISH} est un dessert dans l’esprit de la maison, à la douceur équilibrée et à la texture soignée, pensé pour terminer le repas avec délicatesse.","Arroz con leche":"{DISH} est un dessert dans l’esprit de la maison, à la douceur équilibrée et à la texture soignée, pensé pour terminer le repas avec délicatesse.","Natillas":"{DISH} est un dessert dans l’esprit de la maison, à la douceur équilibrée et à la texture soignée, pensé pour terminer le repas avec délicatesse.","Soufflé con helado":"{DISH} est un dessert dans l’esprit de la maison, à la douceur équilibrée et à la texture soignée, pensé pour terminer le repas avec délicatesse.","Leche frita con helado":"{DISH} est un dessert dans l’esprit de la maison, à la douceur équilibrée et à la texture soignée, pensé pour terminer le repas avec délicatesse.","Milhoja con crema o chocolate":"{DISH} est un dessert dans l’esprit de la maison, à la douceur équilibrée et à la texture soignée, pensé pour terminer le repas avec délicatesse.","Tarta de chocolate":"{DISH} est un dessert dans l’esprit de la maison, à la douceur équilibrée et à la texture soignée, pensé pour terminer le repas avec délicatesse.","Tarta de la abuela":"{DISH} est un dessert dans l’esprit de la maison, à la douceur équilibrée et à la texture soignée, pensé pour terminer le repas avec délicatesse.","Tarta de manzana":"{DISH} est un dessert dans l’esprit de la maison, à la douceur équilibrée et à la texture soignée, pensé pour terminer le repas avec délicatesse.","Tarta de queso":"Gâteau au fromage crémeux, à la texture douce, à la douceur équilibrée et à la finale délicatement lactée.","Tarta de turrón":"{DISH} est un dessert dans l’esprit de la maison, à la douceur équilibrée et à la texture soignée, pensé pour terminer le repas avec délicatesse.","Teja con helado y chocolate":"{DISH} est un dessert dans l’esprit de la maison, à la douceur équilibrée et à la texture soignée, pensé pour terminer le repas avec délicatesse.","Tocino de cielo":"{DISH} est un dessert dans l’esprit de la maison, à la douceur équilibrée et à la texture soignée, pensé pour terminer le repas avec délicatesse.","Pastel de frutas":"{DISH} est un dessert dans l’esprit de la maison, à la douceur équilibrée et à la texture soignée, pensé pour terminer le repas avec délicatesse."},"de":{"Anchoa en salmuera":"{DISH} wird als traditioneller Appetithappen mit sorgfältig ausgewählten Zutaten zubereitet und verbindet ausgewogene Textur mit klarem Geschmack.","Matrimonio":"{DISH} wird als traditioneller Appetithappen mit sorgfältig ausgewählten Zutaten zubereitet und verbindet ausgewogene Textur mit klarem Geschmack.","Bicicleta":"{DISH} wird als traditioneller Appetithappen mit sorgfältig ausgewählten Zutaten zubereitet und verbindet ausgewogene Textur mit klarem Geschmack.","Marinera con anchoa":"{DISH} wird als traditioneller Appetithappen mit sorgfältig ausgewählten Zutaten zubereitet und verbindet ausgewogene Textur mit klarem Geschmack.","Marinero con boquerón":"{DISH} wird als traditioneller Appetithappen mit sorgfältig ausgewählten Zutaten zubereitet und verbindet ausgewogene Textur mit klarem Geschmack.","Ensaladilla rusa":"{DISH} wird als traditioneller Appetithappen mit sorgfältig ausgewählten Zutaten zubereitet und verbindet ausgewogene Textur mit klarem Geschmack.","Almendras":"{DISH} wird als traditioneller Appetithappen mit sorgfältig ausgewählten Zutaten zubereitet und verbindet ausgewogene Textur mit klarem Geschmack.","Aceitunas":"{DISH} wird als traditioneller Appetithappen mit sorgfältig ausgewählten Zutaten zubereitet und verbindet ausgewogene Textur mit klarem Geschmack.","Hueva":"{DISH} wird als traditioneller Appetithappen mit sorgfältig ausgewählten Zutaten zubereitet und verbindet ausgewogene Textur mit klarem Geschmack.","Mojama":"{DISH} wird als traditioneller Appetithappen mit sorgfältig ausgewählten Zutaten zubereitet und verbindet ausgewogene Textur mit klarem Geschmack.","Lata de berberechos":"{DISH} wird als traditioneller Appetithappen mit sorgfältig ausgewählten Zutaten zubereitet und verbindet ausgewogene Textur mit klarem Geschmack.","Lata de mejillones":"{DISH} wird als traditioneller Appetithappen mit sorgfältig ausgewählten Zutaten zubereitet und verbindet ausgewogene Textur mit klarem Geschmack.","Lata de navajas":"{DISH} wird als traditioneller Appetithappen mit sorgfältig ausgewählten Zutaten zubereitet und verbindet ausgewogene Textur mit klarem Geschmack.","Canapé de salmón":"{DISH} wird als traditioneller Appetithappen mit sorgfältig ausgewählten Zutaten zubereitet und verbindet ausgewogene Textur mit klarem Geschmack.","Pulpo":"{DISH} wird als traditioneller Appetithappen mit sorgfältig ausgewählten Zutaten zubereitet und verbindet ausgewogene Textur mit klarem Geschmack.","Caballitos":"{DISH} wird als traditioneller Appetithappen mit sorgfältig ausgewählten Zutaten zubereitet und verbindet ausgewogene Textur mit klarem Geschmack.","Tigres":"{DISH} wird als traditioneller Appetithappen mit sorgfältig ausgewählten Zutaten zubereitet und verbindet ausgewogene Textur mit klarem Geschmack.","Buñuelos de bacalao":"{DISH} wird als traditioneller Appetithappen mit sorgfältig ausgewählten Zutaten zubereitet und verbindet ausgewogene Textur mit klarem Geschmack.","Croquetas de jamón":"{DISH} wird als traditioneller Appetithappen mit sorgfältig ausgewählten Zutaten zubereitet und verbindet ausgewogene Textur mit klarem Geschmack.","Champiñón al ajillo o plancha":"{DISH} wird als traditioneller Appetithappen mit sorgfältig ausgewählten Zutaten zubereitet und verbindet ausgewogene Textur mit klarem Geschmack.","Foie a la plancha con pan de cristal":"{DISH} wird als traditioneller Appetithappen mit sorgfältig ausgewählten Zutaten zubereitet und verbindet ausgewogene Textur mit klarem Geschmack.","Ostras":"{DISH} wird nach Frische ausgewählt und möglichst pur zubereitet, damit natürliche Süße, Textur und typisches Meeresaroma erhalten bleiben.","Almeja de Carril":"{DISH} wird nach Frische ausgewählt und möglichst pur zubereitet, damit natürliche Süße, Textur und typisches Meeresaroma erhalten bleiben.","Almeja chirla":"{DISH} wird nach Frische ausgewählt und möglichst pur zubereitet, damit natürliche Süße, Textur und typisches Meeresaroma erhalten bleiben.","Coquinas":"{DISH} wird nach Frische ausgewählt und möglichst pur zubereitet, damit natürliche Süße, Textur und typisches Meeresaroma erhalten bleiben.","Berberechos":"{DISH} wird nach Frische ausgewählt und möglichst pur zubereitet, damit natürliche Süße, Textur und typisches Meeresaroma erhalten bleiben.","Zamburiñas":"{DISH} wird nach Frische ausgewählt und möglichst pur zubereitet, damit natürliche Süße, Textur und typisches Meeresaroma erhalten bleiben.","Mejillones al vapor":"{DISH} wird nach Frische ausgewählt und möglichst pur zubereitet, damit natürliche Süße, Textur und typisches Meeresaroma erhalten bleiben.","Calamar fresco / de potera":"Frischer, mit der Leine gefangener Kalmar mit fester, zarter Textur und klarem Meeresaroma, bewusst schlicht zubereitet.","Quisquilla":"{DISH} wird nach Frische ausgewählt und möglichst pur zubereitet, damit natürliche Süße, Textur und typisches Meeresaroma erhalten bleiben.","Cigala":"{DISH} wird nach Frische ausgewählt und möglichst pur zubereitet, damit natürliche Süße, Textur und typisches Meeresaroma erhalten bleiben.","Gamba blanca hervida":"Weiße Garnelen schonend gekocht und im richtigen Moment abgekühlt, damit Saftigkeit, Süße und feines Meeresaroma erhalten bleiben.","Gamba roja":"{DISH} wird nach Frische ausgewählt und möglichst pur zubereitet, damit natürliche Süße, Textur und typisches Meeresaroma erhalten bleiben.","Arroz a banda":"{DISH} wird frisch mit einem sorgfältig zubereiteten Fond gekocht, damit der Reis intensive mediterrane Aromen aufnimmt und seine traditionelle Textur behält.","Arroz caldero":"Traditioneller Reis aus Murcia mit intensivem Fischfond, Ñora-Paprika und Knoblauch, inspiriert von der Küche des Mar Menor.","Arroz de marisco":"{DISH} wird frisch mit einem sorgfältig zubereiteten Fond gekocht, damit der Reis intensive mediterrane Aromen aufnimmt und seine traditionelle Textur behält.","Arroz y conejo":"{DISH} wird frisch mit einem sorgfältig zubereiteten Fond gekocht, damit der Reis intensive mediterrane Aromen aufnimmt und seine traditionelle Textur behält.","Arroz de verduras y pollo":"{DISH} wird frisch mit einem sorgfältig zubereiteten Fond gekocht, damit der Reis intensive mediterrane Aromen aufnimmt und seine traditionelle Textur behält.","Alcachofas con huevos":"{DISH} wird frisch mit ausgewählten Zutaten zubereitet und verbindet traditionelle mediterrane Küche mit einer klaren, ausgewogenen Präsentation.","Alcachofas con foie":"{DISH} wird frisch mit ausgewählten Zutaten zubereitet und verbindet traditionelle mediterrane Küche mit einer klaren, ausgewogenen Präsentation.","Anchoas con pan de cristal":"{DISH} wird frisch mit ausgewählten Zutaten zubereitet und verbindet traditionelle mediterrane Küche mit einer klaren, ausgewogenen Präsentation.","Bonito escabechado":"{DISH} wird frisch mit ausgewählten Zutaten zubereitet und verbindet traditionelle mediterrane Küche mit einer klaren, ausgewogenen Präsentation.","Calamar nacional":"{DISH} wird frisch mit ausgewählten Zutaten zubereitet und verbindet traditionelle mediterrane Küche mit einer klaren, ausgewogenen Präsentation.","Calamar a la plancha con champiñón":"{DISH} wird frisch mit ausgewählten Zutaten zubereitet und verbindet traditionelle mediterrane Küche mit einer klaren, ausgewogenen Präsentation.","Crujiente de alcachofa":"{DISH} wird frisch mit ausgewählten Zutaten zubereitet und verbindet traditionelle mediterrane Küche mit einer klaren, ausgewogenen Präsentation.","Chipirón frito o al ajillo":"{DISH} wird frisch mit ausgewählten Zutaten zubereitet und verbindet traditionelle mediterrane Küche mit einer klaren, ausgewogenen Präsentation.","Gambas al ajillo":"{DISH} wird frisch mit ausgewählten Zutaten zubereitet und verbindet traditionelle mediterrane Küche mit einer klaren, ausgewogenen Präsentation.","Salmón con bonito en escabeche":"{DISH} wird frisch mit ausgewählten Zutaten zubereitet und verbindet traditionelle mediterrane Küche mit einer klaren, ausgewogenen Präsentation.","Salmón al eneldo":"{DISH} wird frisch mit ausgewählten Zutaten zubereitet und verbindet traditionelle mediterrane Küche mit einer klaren, ausgewogenen Präsentation.","Champiñón relleno de ibérico":"{DISH} wird frisch mit ausgewählten Zutaten zubereitet und verbindet traditionelle mediterrane Küche mit einer klaren, ausgewogenen Präsentation.","Embutidos variados":"{DISH} wird frisch mit ausgewählten Zutaten zubereitet und verbindet traditionelle mediterrane Küche mit einer klaren, ausgewogenen Präsentation.","Caña de lomo de Jabugo":"{DISH} wird frisch mit ausgewählten Zutaten zubereitet und verbindet traditionelle mediterrane Küche mit einer klaren, ausgewogenen Präsentation.","Jamón de Jabugo":"{DISH} wird frisch mit ausgewählten Zutaten zubereitet und verbindet traditionelle mediterrane Küche mit einer klaren, ausgewogenen Präsentation.","Quesos variados":"{DISH} wird frisch mit ausgewählten Zutaten zubereitet und verbindet traditionelle mediterrane Küche mit einer klaren, ausgewogenen Präsentation.","Caldo de pavo con pelotas":"{DISH} kombiniert frische Produkte mit einer einfachen, traditionellen Zubereitung, die Geschmack und natürliche Textur der Zutaten bewahrt.","Sopa de pescado o marisco":"{DISH} kombiniert frische Produkte mit einer einfachen, traditionellen Zubereitung, die Geschmack und natürliche Textur der Zutaten bewahrt.","Ensalada mixta":"{DISH} kombiniert frische Produkte mit einer einfachen, traditionellen Zubereitung, die Geschmack und natürliche Textur der Zutaten bewahrt.","Tomate partido con bonito":"{DISH} kombiniert frische Produkte mit einer einfachen, traditionellen Zubereitung, die Geschmack und natürliche Textur der Zutaten bewahrt.","Tomate y lechuga perdiz":"{DISH} kombiniert frische Produkte mit einer einfachen, traditionellen Zubereitung, die Geschmack und natürliche Textur der Zutaten bewahrt.","Tomate con ventresca":"{DISH} kombiniert frische Produkte mit einer einfachen, traditionellen Zubereitung, die Geschmack und natürliche Textur der Zutaten bewahrt.","Berenjenas a la crema":"{DISH} kombiniert frische Produkte mit einer einfachen, traditionellen Zubereitung, die Geschmack und natürliche Textur der Zutaten bewahrt.","Champiñón a la plancha o ajillo":"{DISH} kombiniert frische Produkte mit einer einfachen, traditionellen Zubereitung, die Geschmack und natürliche Textur der Zutaten bewahrt.","Habas salteadas a la murciana":"{DISH} kombiniert frische Produkte mit einer einfachen, traditionellen Zubereitung, die Geschmack und natürliche Textur der Zutaten bewahrt.","Habas tiernas":"{DISH} kombiniert frische Produkte mit einer einfachen, traditionellen Zubereitung, die Geschmack und natürliche Textur der Zutaten bewahrt.","Panaché de verduras con jamón":"{DISH} kombiniert frische Produkte mit einer einfachen, traditionellen Zubereitung, die Geschmack und natürliche Textur der Zutaten bewahrt.","Pastel de puerros con gambas":"{DISH} kombiniert frische Produkte mit einer einfachen, traditionellen Zubereitung, die Geschmack und natürliche Textur der Zutaten bewahrt.","Guiso del día":"{DISH} wird nach traditioneller Art langsam und sorgfältig zubereitet, damit sich die Aromen harmonisch verbinden und eine angenehme Textur entsteht.","Huevos con patatas":"{DISH} wird nach traditioneller Art langsam und sorgfältig zubereitet, damit sich die Aromen harmonisch verbinden und eine angenehme Textur entsteht.","Huevos revueltos Onda":"{DISH} wird nach traditioneller Art langsam und sorgfältig zubereitet, damit sich die Aromen harmonisch verbinden und eine angenehme Textur entsteht.","Tortilla de espárragos":"{DISH} wird nach traditioneller Art langsam und sorgfältig zubereitet, damit sich die Aromen harmonisch verbinden und eine angenehme Textur entsteht.","Tortilla de gambas":"{DISH} wird nach traditioneller Art langsam und sorgfältig zubereitet, damit sich die Aromen harmonisch verbinden und eine angenehme Textur entsteht.","Tortilla de jamón o chorizo":"{DISH} wird nach traditioneller Art langsam und sorgfältig zubereitet, damit sich die Aromen harmonisch verbinden und eine angenehme Textur entsteht.","Atún de ijada":"{DISH} wird so zubereitet, dass der Charakter des Fisches im Mittelpunkt steht und Saftigkeit sowie feines Meeresaroma erhalten bleiben.","Chirrete frito":"{DISH} wird so zubereitet, dass der Charakter des Fisches im Mittelpunkt steht und Saftigkeit sowie feines Meeresaroma erhalten bleiben.","Cocochas a la romana o al pil-pil":"{DISH} wird so zubereitet, dass der Charakter des Fisches im Mittelpunkt steht und Saftigkeit sowie feines Meeresaroma erhalten bleiben.","Corvina a la murciana":"{DISH} wird so zubereitet, dass der Charakter des Fisches im Mittelpunkt steht und Saftigkeit sowie feines Meeresaroma erhalten bleiben.","Dorada a la sal":"{DISH} wird so zubereitet, dass der Charakter des Fisches im Mittelpunkt steht und Saftigkeit sowie feines Meeresaroma erhalten bleiben.","Gallo Pedro frito":"{DISH} wird so zubereitet, dass der Charakter des Fisches im Mittelpunkt steht und Saftigkeit sowie feines Meeresaroma erhalten bleiben.","Lenguado a la plancha o meunière":"{DISH} wird so zubereitet, dass der Charakter des Fisches im Mittelpunkt steht und Saftigkeit sowie feines Meeresaroma erhalten bleiben.","Lubina al ajo pescador":"{DISH} wird so zubereitet, dass der Charakter des Fisches im Mittelpunkt steht und Saftigkeit sowie feines Meeresaroma erhalten bleiben.","Merluza a la plancha o romana":"{DISH} wird so zubereitet, dass der Charakter des Fisches im Mittelpunkt steht und Saftigkeit sowie feines Meeresaroma erhalten bleiben.","Merluza en salsa verde":"{DISH} wird so zubereitet, dass der Charakter des Fisches im Mittelpunkt steht und Saftigkeit sowie feines Meeresaroma erhalten bleiben.","Mero a la cazuela o plancha":"{DISH} wird so zubereitet, dass der Charakter des Fisches im Mittelpunkt steht und Saftigkeit sowie feines Meeresaroma erhalten bleiben.","Rape a la marinera":"{DISH} wird so zubereitet, dass der Charakter des Fisches im Mittelpunkt steht und Saftigkeit sowie feines Meeresaroma erhalten bleiben.","Rodaballo al horno o plancha":"{DISH} wird so zubereitet, dass der Charakter des Fisches im Mittelpunkt steht und Saftigkeit sowie feines Meeresaroma erhalten bleiben.","Entrecot":"{DISH} wird frisch nach Wunsch gegart, mit besonderem Augenmerk auf Temperatur, Zartheit und den natürlichen Charakter des ausgewählten Fleischstücks.","Solomillo a la pimienta o roquefort":"{DISH} wird frisch nach Wunsch gegart, mit besonderem Augenmerk auf Temperatur, Zartheit und den natürlichen Charakter des ausgewählten Fleischstücks.","Solomillo a la brasa o foie y PX":"{DISH} wird frisch nach Wunsch gegart, mit besonderem Augenmerk auf Temperatur, Zartheit und den natürlichen Charakter des ausgewählten Fleischstücks.","Paletilla de cabrito al horno":"{DISH} wird frisch nach Wunsch gegart, mit besonderem Augenmerk auf Temperatur, Zartheit und den natürlichen Charakter des ausgewählten Fleischstücks.","Chuletas de cabrito a la plancha":"{DISH} wird frisch nach Wunsch gegart, mit besonderem Augenmerk auf Temperatur, Zartheit und den natürlichen Charakter des ausgewählten Fleischstücks.","Chuletón a la brasa":"Ein großzügiges Stück Rindfleisch über Holzkohle gegrillt, außen kräftig angeröstet und innen nach Wunsch gegart.","Cochinillo al horno":"{DISH} wird frisch nach Wunsch gegart, mit besonderem Augenmerk auf Temperatur, Zartheit und den natürlichen Charakter des ausgewählten Fleischstücks.","Brocheta de solomillo al Jerez":"{DISH} wird frisch nach Wunsch gegart, mit besonderem Augenmerk auf Temperatur, Zartheit und den natürlichen Charakter des ausgewählten Fleischstücks.","Lechazo de cabrito":"{DISH} wird frisch nach Wunsch gegart, mit besonderem Augenmerk auf Temperatur, Zartheit und den natürlichen Charakter des ausgewählten Fleischstücks.","Pluma ibérica a la parrilla":"{DISH} wird frisch nach Wunsch gegart, mit besonderem Augenmerk auf Temperatur, Zartheit und den natürlichen Charakter des ausgewählten Fleischstücks.","Solomillo tártaro":"{DISH} wird frisch nach Wunsch gegart, mit besonderem Augenmerk auf Temperatur, Zartheit und den natürlichen Charakter des ausgewählten Fleischstücks.","Escalope milanesa":"{DISH} wird frisch nach Wunsch gegart, mit besonderem Augenmerk auf Temperatur, Zartheit und den natürlichen Charakter des ausgewählten Fleischstücks.","Rabo de toro en su jugo":"{DISH} wird frisch nach Wunsch gegart, mit besonderem Augenmerk auf Temperatur, Zartheit und den natürlichen Charakter des ausgewählten Fleischstücks.","Lomo de cerdo con setas":"{DISH} wird frisch nach Wunsch gegart, mit besonderem Augenmerk auf Temperatur, Zartheit und den natürlichen Charakter des ausgewählten Fleischstücks.","Pechuga de pollo a la plancha":"{DISH} wird frisch nach Wunsch gegart, mit besonderem Augenmerk auf Temperatur, Zartheit und den natürlichen Charakter des ausgewählten Fleischstücks.","Montadito de lomo":"{DISH} wird in knusprigem Brot mit frisch zubereiteter Füllung serviert – unkompliziert, herzhaft und aromatisch.","Montadito de ternera":"{DISH} wird in knusprigem Brot mit frisch zubereiteter Füllung serviert – unkompliziert, herzhaft und aromatisch.","Montadito de solomillo":"{DISH} wird in knusprigem Brot mit frisch zubereiteter Füllung serviert – unkompliziert, herzhaft und aromatisch.","Montadito de solomillo y foie":"{DISH} wird in knusprigem Brot mit frisch zubereiteter Füllung serviert – unkompliziert, herzhaft und aromatisch.","Fruta":"{DISH} ist ein Dessert im Stil des Hauses mit ausgewogener Süße und sorgfältiger Textur, als feiner Abschluss des Menüs.","Sorbetes":"{DISH} ist ein Dessert im Stil des Hauses mit ausgewogener Süße und sorgfältiger Textur, als feiner Abschluss des Menüs.","Fresas con nata":"{DISH} ist ein Dessert im Stil des Hauses mit ausgewogener Süße und sorgfältiger Textur, als feiner Abschluss des Menüs.","Helado":"{DISH} ist ein Dessert im Stil des Hauses mit ausgewogener Süße und sorgfältiger Textur, als feiner Abschluss des Menüs.","Arroz con leche":"{DISH} ist ein Dessert im Stil des Hauses mit ausgewogener Süße und sorgfältiger Textur, als feiner Abschluss des Menüs.","Natillas":"{DISH} ist ein Dessert im Stil des Hauses mit ausgewogener Süße und sorgfältiger Textur, als feiner Abschluss des Menüs.","Soufflé con helado":"{DISH} ist ein Dessert im Stil des Hauses mit ausgewogener Süße und sorgfältiger Textur, als feiner Abschluss des Menüs.","Leche frita con helado":"{DISH} ist ein Dessert im Stil des Hauses mit ausgewogener Süße und sorgfältiger Textur, als feiner Abschluss des Menüs.","Milhoja con crema o chocolate":"{DISH} ist ein Dessert im Stil des Hauses mit ausgewogener Süße und sorgfältiger Textur, als feiner Abschluss des Menüs.","Tarta de chocolate":"{DISH} ist ein Dessert im Stil des Hauses mit ausgewogener Süße und sorgfältiger Textur, als feiner Abschluss des Menüs.","Tarta de la abuela":"{DISH} ist ein Dessert im Stil des Hauses mit ausgewogener Süße und sorgfältiger Textur, als feiner Abschluss des Menüs.","Tarta de manzana":"{DISH} ist ein Dessert im Stil des Hauses mit ausgewogener Süße und sorgfältiger Textur, als feiner Abschluss des Menüs.","Tarta de queso":"Cremiger Käsekuchen mit weicher Textur, ausgewogener Süße und feinem milchigem Finish.","Tarta de turrón":"{DISH} ist ein Dessert im Stil des Hauses mit ausgewogener Süße und sorgfältiger Textur, als feiner Abschluss des Menüs.","Teja con helado y chocolate":"{DISH} ist ein Dessert im Stil des Hauses mit ausgewogener Süße und sorgfältiger Textur, als feiner Abschluss des Menüs.","Tocino de cielo":"{DISH} ist ein Dessert im Stil des Hauses mit ausgewogener Süße und sorgfältiger Textur, als feiner Abschluss des Menüs.","Pastel de frutas":"{DISH} ist ein Dessert im Stil des Hauses mit ausgewogener Süße und sorgfältiger Textur, als feiner Abschluss des Menüs."},"zh":{"Anchoa en salmuera":"{DISH} 以传统开胃小吃的方式制作，选用合适食材，在口感、香气与味道之间保持细腻平衡。","Matrimonio":"{DISH} 以传统开胃小吃的方式制作，选用合适食材，在口感、香气与味道之间保持细腻平衡。","Bicicleta":"{DISH} 以传统开胃小吃的方式制作，选用合适食材，在口感、香气与味道之间保持细腻平衡。","Marinera con anchoa":"{DISH} 以传统开胃小吃的方式制作，选用合适食材，在口感、香气与味道之间保持细腻平衡。","Marinero con boquerón":"{DISH} 以传统开胃小吃的方式制作，选用合适食材，在口感、香气与味道之间保持细腻平衡。","Ensaladilla rusa":"{DISH} 以传统开胃小吃的方式制作，选用合适食材，在口感、香气与味道之间保持细腻平衡。","Almendras":"{DISH} 以传统开胃小吃的方式制作，选用合适食材，在口感、香气与味道之间保持细腻平衡。","Aceitunas":"{DISH} 以传统开胃小吃的方式制作，选用合适食材，在口感、香气与味道之间保持细腻平衡。","Hueva":"{DISH} 以传统开胃小吃的方式制作，选用合适食材，在口感、香气与味道之间保持细腻平衡。","Mojama":"{DISH} 以传统开胃小吃的方式制作，选用合适食材，在口感、香气与味道之间保持细腻平衡。","Lata de berberechos":"{DISH} 以传统开胃小吃的方式制作，选用合适食材，在口感、香气与味道之间保持细腻平衡。","Lata de mejillones":"{DISH} 以传统开胃小吃的方式制作，选用合适食材，在口感、香气与味道之间保持细腻平衡。","Lata de navajas":"{DISH} 以传统开胃小吃的方式制作，选用合适食材，在口感、香气与味道之间保持细腻平衡。","Canapé de salmón":"{DISH} 以传统开胃小吃的方式制作，选用合适食材，在口感、香气与味道之间保持细腻平衡。","Pulpo":"{DISH} 以传统开胃小吃的方式制作，选用合适食材，在口感、香气与味道之间保持细腻平衡。","Caballitos":"{DISH} 以传统开胃小吃的方式制作，选用合适食材，在口感、香气与味道之间保持细腻平衡。","Tigres":"{DISH} 以传统开胃小吃的方式制作，选用合适食材，在口感、香气与味道之间保持细腻平衡。","Buñuelos de bacalao":"{DISH} 以传统开胃小吃的方式制作，选用合适食材，在口感、香气与味道之间保持细腻平衡。","Croquetas de jamón":"{DISH} 以传统开胃小吃的方式制作，选用合适食材，在口感、香气与味道之间保持细腻平衡。","Champiñón al ajillo o plancha":"{DISH} 以传统开胃小吃的方式制作，选用合适食材，在口感、香气与味道之间保持细腻平衡。","Foie a la plancha con pan de cristal":"{DISH} 以传统开胃小吃的方式制作，选用合适食材，在口感、香气与味道之间保持细腻平衡。","Ostras":"{DISH} 注重新鲜度，并采用尽量简洁的烹饪方式，以保留天然甜味、鲜嫩口感和纯正海洋风味。","Almeja de Carril":"{DISH} 注重新鲜度，并采用尽量简洁的烹饪方式，以保留天然甜味、鲜嫩口感和纯正海洋风味。","Almeja chirla":"{DISH} 注重新鲜度，并采用尽量简洁的烹饪方式，以保留天然甜味、鲜嫩口感和纯正海洋风味。","Coquinas":"{DISH} 注重新鲜度，并采用尽量简洁的烹饪方式，以保留天然甜味、鲜嫩口感和纯正海洋风味。","Berberechos":"{DISH} 注重新鲜度，并采用尽量简洁的烹饪方式，以保留天然甜味、鲜嫩口感和纯正海洋风味。","Zamburiñas":"{DISH} 注重新鲜度，并采用尽量简洁的烹饪方式，以保留天然甜味、鲜嫩口感和纯正海洋风味。","Mejillones al vapor":"{DISH} 注重新鲜度，并采用尽量简洁的烹饪方式，以保留天然甜味、鲜嫩口感和纯正海洋风味。","Calamar fresco / de potera":"新鲜钓捕鱿鱼，肉质紧实而柔嫩，以简洁方式烹制，突出纯净鲜明的海洋风味。","Quisquilla":"{DISH} 注重新鲜度，并采用尽量简洁的烹饪方式，以保留天然甜味、鲜嫩口感和纯正海洋风味。","Cigala":"{DISH} 注重新鲜度，并采用尽量简洁的烹饪方式，以保留天然甜味、鲜嫩口感和纯正海洋风味。","Gamba blanca hervida":"白虾以恰到好处的火候水煮后迅速冷却，保留鲜嫩口感、天然甜味与细腻海鲜香气。","Gamba roja":"{DISH} 注重新鲜度，并采用尽量简洁的烹饪方式，以保留天然甜味、鲜嫩口感和纯正海洋风味。","Arroz a banda":"{DISH} 点单后以精心熬制的高汤烹煮，让米粒充分吸收浓郁地中海风味，同时保留传统口感。","Arroz caldero":"穆尔西亚传统米饭，以浓郁鱼汤、ñora甜椒和蒜香烹制，呈现小海湾地区的经典风味。","Arroz de marisco":"{DISH} 点单后以精心熬制的高汤烹煮，让米粒充分吸收浓郁地中海风味，同时保留传统口感。","Arroz y conejo":"{DISH} 点单后以精心熬制的高汤烹煮，让米粒充分吸收浓郁地中海风味，同时保留传统口感。","Arroz de verduras y pollo":"{DISH} 点单后以精心熬制的高汤烹煮，让米粒充分吸收浓郁地中海风味，同时保留传统口感。","Alcachofas con huevos":"{DISH} 以精选食材现点现制，将传统地中海烹饪方式与简洁、平衡的呈现结合在一起。","Alcachofas con foie":"{DISH} 以精选食材现点现制，将传统地中海烹饪方式与简洁、平衡的呈现结合在一起。","Anchoas con pan de cristal":"{DISH} 以精选食材现点现制，将传统地中海烹饪方式与简洁、平衡的呈现结合在一起。","Bonito escabechado":"{DISH} 以精选食材现点现制，将传统地中海烹饪方式与简洁、平衡的呈现结合在一起。","Calamar nacional":"{DISH} 以精选食材现点现制，将传统地中海烹饪方式与简洁、平衡的呈现结合在一起。","Calamar a la plancha con champiñón":"{DISH} 以精选食材现点现制，将传统地中海烹饪方式与简洁、平衡的呈现结合在一起。","Crujiente de alcachofa":"{DISH} 以精选食材现点现制，将传统地中海烹饪方式与简洁、平衡的呈现结合在一起。","Chipirón frito o al ajillo":"{DISH} 以精选食材现点现制，将传统地中海烹饪方式与简洁、平衡的呈现结合在一起。","Gambas al ajillo":"{DISH} 以精选食材现点现制，将传统地中海烹饪方式与简洁、平衡的呈现结合在一起。","Salmón con bonito en escabeche":"{DISH} 以精选食材现点现制，将传统地中海烹饪方式与简洁、平衡的呈现结合在一起。","Salmón al eneldo":"{DISH} 以精选食材现点现制，将传统地中海烹饪方式与简洁、平衡的呈现结合在一起。","Champiñón relleno de ibérico":"{DISH} 以精选食材现点现制，将传统地中海烹饪方式与简洁、平衡的呈现结合在一起。","Embutidos variados":"{DISH} 以精选食材现点现制，将传统地中海烹饪方式与简洁、平衡的呈现结合在一起。","Caña de lomo de Jabugo":"{DISH} 以精选食材现点现制，将传统地中海烹饪方式与简洁、平衡的呈现结合在一起。","Jamón de Jabugo":"{DISH} 以精选食材现点现制，将传统地中海烹饪方式与简洁、平衡的呈现结合在一起。","Quesos variados":"{DISH} 以精选食材现点现制，将传统地中海烹饪方式与简洁、平衡的呈现结合在一起。","Caldo de pavo con pelotas":"{DISH} 以新鲜食材配合简洁传统的烹饪方式，尽可能保留每种食材原有的味道与口感。","Sopa de pescado o marisco":"{DISH} 以新鲜食材配合简洁传统的烹饪方式，尽可能保留每种食材原有的味道与口感。","Ensalada mixta":"{DISH} 以新鲜食材配合简洁传统的烹饪方式，尽可能保留每种食材原有的味道与口感。","Tomate partido con bonito":"{DISH} 以新鲜食材配合简洁传统的烹饪方式，尽可能保留每种食材原有的味道与口感。","Tomate y lechuga perdiz":"{DISH} 以新鲜食材配合简洁传统的烹饪方式，尽可能保留每种食材原有的味道与口感。","Tomate con ventresca":"{DISH} 以新鲜食材配合简洁传统的烹饪方式，尽可能保留每种食材原有的味道与口感。","Berenjenas a la crema":"{DISH} 以新鲜食材配合简洁传统的烹饪方式，尽可能保留每种食材原有的味道与口感。","Champiñón a la plancha o ajillo":"{DISH} 以新鲜食材配合简洁传统的烹饪方式，尽可能保留每种食材原有的味道与口感。","Habas salteadas a la murciana":"{DISH} 以新鲜食材配合简洁传统的烹饪方式，尽可能保留每种食材原有的味道与口感。","Habas tiernas":"{DISH} 以新鲜食材配合简洁传统的烹饪方式，尽可能保留每种食材原有的味道与口感。","Panaché de verduras con jamón":"{DISH} 以新鲜食材配合简洁传统的烹饪方式，尽可能保留每种食材原有的味道与口感。","Pastel de puerros con gambas":"{DISH} 以新鲜食材配合简洁传统的烹饪方式，尽可能保留每种食材原有的味道与口感。","Guiso del día":"{DISH} 采用温暖传统的慢火烹饪方式，让各种味道自然融合，并形成柔和而丰富的口感。","Huevos con patatas":"{DISH} 采用温暖传统的慢火烹饪方式，让各种味道自然融合，并形成柔和而丰富的口感。","Huevos revueltos Onda":"{DISH} 采用温暖传统的慢火烹饪方式，让各种味道自然融合，并形成柔和而丰富的口感。","Tortilla de espárragos":"{DISH} 采用温暖传统的慢火烹饪方式，让各种味道自然融合，并形成柔和而丰富的口感。","Tortilla de gambas":"{DISH} 采用温暖传统的慢火烹饪方式，让各种味道自然融合，并形成柔和而丰富的口感。","Tortilla de jamón o chorizo":"{DISH} 采用温暖传统的慢火烹饪方式，让各种味道自然融合，并形成柔和而丰富的口感。","Atún de ijada":"{DISH} 的烹饪重点在于突出鱼本身的特点，以清爽的地中海方式保留鲜嫩口感和细腻海鲜风味。","Chirrete frito":"{DISH} 的烹饪重点在于突出鱼本身的特点，以清爽的地中海方式保留鲜嫩口感和细腻海鲜风味。","Cocochas a la romana o al pil-pil":"{DISH} 的烹饪重点在于突出鱼本身的特点，以清爽的地中海方式保留鲜嫩口感和细腻海鲜风味。","Corvina a la murciana":"{DISH} 的烹饪重点在于突出鱼本身的特点，以清爽的地中海方式保留鲜嫩口感和细腻海鲜风味。","Dorada a la sal":"{DISH} 的烹饪重点在于突出鱼本身的特点，以清爽的地中海方式保留鲜嫩口感和细腻海鲜风味。","Gallo Pedro frito":"{DISH} 的烹饪重点在于突出鱼本身的特点，以清爽的地中海方式保留鲜嫩口感和细腻海鲜风味。","Lenguado a la plancha o meunière":"{DISH} 的烹饪重点在于突出鱼本身的特点，以清爽的地中海方式保留鲜嫩口感和细腻海鲜风味。","Lubina al ajo pescador":"{DISH} 的烹饪重点在于突出鱼本身的特点，以清爽的地中海方式保留鲜嫩口感和细腻海鲜风味。","Merluza a la plancha o romana":"{DISH} 的烹饪重点在于突出鱼本身的特点，以清爽的地中海方式保留鲜嫩口感和细腻海鲜风味。","Merluza en salsa verde":"{DISH} 的烹饪重点在于突出鱼本身的特点，以清爽的地中海方式保留鲜嫩口感和细腻海鲜风味。","Mero a la cazuela o plancha":"{DISH} 的烹饪重点在于突出鱼本身的特点，以清爽的地中海方式保留鲜嫩口感和细腻海鲜风味。","Rape a la marinera":"{DISH} 的烹饪重点在于突出鱼本身的特点，以清爽的地中海方式保留鲜嫩口感和细腻海鲜风味。","Rodaballo al horno o plancha":"{DISH} 的烹饪重点在于突出鱼本身的特点，以清爽的地中海方式保留鲜嫩口感和细腻海鲜风味。","Entrecot":"{DISH} 点单后现做，特别注重火候、嫩度和肉香，以充分表现所选部位本身的特色。","Solomillo a la pimienta o roquefort":"{DISH} 点单后现做，特别注重火候、嫩度和肉香，以充分表现所选部位本身的特色。","Solomillo a la brasa o foie y PX":"{DISH} 点单后现做，特别注重火候、嫩度和肉香，以充分表现所选部位本身的特色。","Paletilla de cabrito al horno":"{DISH} 点单后现做，特别注重火候、嫩度和肉香，以充分表现所选部位本身的特色。","Chuletas de cabrito a la plancha":"{DISH} 点单后现做，特别注重火候、嫩度和肉香，以充分表现所选部位本身的特色。","Chuletón a la brasa":"精选大块牛肉以炭火烧烤，表面焦香，内部可按您喜欢的熟度烹制，肉香浓郁多汁。","Cochinillo al horno":"{DISH} 点单后现做，特别注重火候、嫩度和肉香，以充分表现所选部位本身的特色。","Brocheta de solomillo al Jerez":"{DISH} 点单后现做，特别注重火候、嫩度和肉香，以充分表现所选部位本身的特色。","Lechazo de cabrito":"{DISH} 点单后现做，特别注重火候、嫩度和肉香，以充分表现所选部位本身的特色。","Pluma ibérica a la parrilla":"{DISH} 点单后现做，特别注重火候、嫩度和肉香，以充分表现所选部位本身的特色。","Solomillo tártaro":"{DISH} 点单后现做，特别注重火候、嫩度和肉香，以充分表现所选部位本身的特色。","Escalope milanesa":"{DISH} 点单后现做，特别注重火候、嫩度和肉香，以充分表现所选部位本身的特色。","Rabo de toro en su jugo":"{DISH} 点单后现做，特别注重火候、嫩度和肉香，以充分表现所选部位本身的特色。","Lomo de cerdo con setas":"{DISH} 点单后现做，特别注重火候、嫩度和肉香，以充分表现所选部位本身的特色。","Pechuga de pollo a la plancha":"{DISH} 点单后现做，特别注重火候、嫩度和肉香，以充分表现所选部位本身的特色。","Montadito de lomo":"{DISH} 以酥脆面包搭配现做馅料，简单直接，却拥有丰富而满足的味道。","Montadito de ternera":"{DISH} 以酥脆面包搭配现做馅料，简单直接，却拥有丰富而满足的味道。","Montadito de solomillo":"{DISH} 以酥脆面包搭配现做馅料，简单直接，却拥有丰富而满足的味道。","Montadito de solomillo y foie":"{DISH} 以酥脆面包搭配现做馅料，简单直接，却拥有丰富而满足的味道。","Fruta":"{DISH} 是餐厅风格的甜点，甜度平衡、口感细腻，为整顿用餐带来柔和而精致的收尾。","Sorbetes":"{DISH} 是餐厅风格的甜点，甜度平衡、口感细腻，为整顿用餐带来柔和而精致的收尾。","Fresas con nata":"{DISH} 是餐厅风格的甜点，甜度平衡、口感细腻，为整顿用餐带来柔和而精致的收尾。","Helado":"{DISH} 是餐厅风格的甜点，甜度平衡、口感细腻，为整顿用餐带来柔和而精致的收尾。","Arroz con leche":"{DISH} 是餐厅风格的甜点，甜度平衡、口感细腻，为整顿用餐带来柔和而精致的收尾。","Natillas":"{DISH} 是餐厅风格的甜点，甜度平衡、口感细腻，为整顿用餐带来柔和而精致的收尾。","Soufflé con helado":"{DISH} 是餐厅风格的甜点，甜度平衡、口感细腻，为整顿用餐带来柔和而精致的收尾。","Leche frita con helado":"{DISH} 是餐厅风格的甜点，甜度平衡、口感细腻，为整顿用餐带来柔和而精致的收尾。","Milhoja con crema o chocolate":"{DISH} 是餐厅风格的甜点，甜度平衡、口感细腻，为整顿用餐带来柔和而精致的收尾。","Tarta de chocolate":"{DISH} 是餐厅风格的甜点，甜度平衡、口感细腻，为整顿用餐带来柔和而精致的收尾。","Tarta de la abuela":"{DISH} 是餐厅风格的甜点，甜度平衡、口感细腻，为整顿用餐带来柔和而精致的收尾。","Tarta de manzana":"{DISH} 是餐厅风格的甜点，甜度平衡、口感细腻，为整顿用餐带来柔和而精致的收尾。","Tarta de queso":"口感细腻柔滑的芝士蛋糕，甜度平衡，乳香柔和而持久。","Tarta de turrón":"{DISH} 是餐厅风格的甜点，甜度平衡、口感细腻，为整顿用餐带来柔和而精致的收尾。","Teja con helado y chocolate":"{DISH} 是餐厅风格的甜点，甜度平衡、口感细腻，为整顿用餐带来柔和而精致的收尾。","Tocino de cielo":"{DISH} 是餐厅风格的甜点，甜度平衡、口感细腻，为整顿用餐带来柔和而精致的收尾。","Pastel de frutas":"{DISH} 是餐厅风格的甜点，甜度平衡、口感细腻，为整顿用餐带来柔和而精致的收尾。"}};
+
+let currentLang = "es";
+
+function dishName(es){
+  if(currentLang==="es") return es;
+  return (dishT[currentLang] && dishT[currentLang][es]) || es;
+}
+
+function render(){
+  const t = ui[currentLang];
+  document.documentElement.lang=currentLang==="zh"?"zh-CN":currentLang;
+  document.getElementById("menuTitle").textContent=menuTitleT[currentLang];
+  document.getElementById("dishClose").setAttribute("aria-label",closeT[currentLang]);
+  document.title=documentTitleT[currentLang];
+  document.getElementById("categoryNav").setAttribute("aria-label",navAriaT[currentLang]);
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    const k=el.dataset.i18n;
+    if(t[k]!==undefined) el.textContent=t[k];
+  });
+
+  const nav=document.getElementById("categoryNav");
+  nav.innerHTML=categories.map(([id])=>`<a href="#${id}">${catT[currentLang][id]}</a>`).join("");
+
+  let num=1;
+  const menu=document.getElementById("menu");
+  menu.innerHTML=categories.map(([id])=>{
+    const list=dishes.filter(d=>d[0]===id);
+    const cards=list.map(d=>{
+      const [cat,name,price,allergens=[],tag="",unit=""] = d;
+      const n=String(num++).padStart(2,"0");
+      const translated=dishName(name);
+      const sub="";
+      const alg=allergens.map(a=>`<span class="allergen" title="${allergenNames[currentLang][a]}">${allergenIcon(a)}</span>`).join("");
+      const popular=tag==="popular";
+      return `<article class="dish fade ${popular?"popular":""}" data-dish-index="${dishes.indexOf(d)}" role="button" tabindex="0" aria-label="${translated}">
+        <div class="dish-top">
+          <div class="dish-number">${n}</div>
+          <div class="dish-name">${translated}${sub}</div>
+          <div class="price">${price==="S/M"?unitT[currentLang]["S/M"]:price}${unit?`<small>${unitT[currentLang][unit]||unit}</small>`:""}</div>
+        </div>
+        ${(popular||alg)?`<div class="dish-meta">${popular?`<span class="tag">🔥 ${t.popular}</span>`:""}${alg}</div>`:""}
+      </article>`;
+    }).join("");
+
+    return `<section class="section" id="${id}">
+      <div class="section-head">
+        <h2>${catT[currentLang][id]}</h2>
+      </div>
+      <div class="menu-grid">${cards}</div>
+    </section>`;
+  }).join("") + infoHTML(t);
+
+  activateAnimations();
+}
+
+function infoHTML(t){
+  const legends=Object.keys(A).filter(key=>dishes.some(d=>(d[3]||[]).includes(key))).map(key=>
+    `<div class="legend-row"><span class="allergen">${allergenIcon(key)}</span><span>${allergenNames[currentLang][key]}</span></div>`
+  ).join("");
+
+  return `
+  <section class="info-panel fade" id="informacion">
+    <h2>${t.info}</h2>
+    <p>${t.about}</p>
+    <div class="info-list">
+      <a class="info-item" href="https://www.google.com/maps/search/?api=1&query=Restaurante%20La%20Onda%2C%20C.%20Bando%20de%20la%20Huerta%2C%20s%2Fn%2C%2030008%20Murcia" target="_blank" rel="noopener">
+        <div class="info-icon">📍</div><div><strong>${t.address}</strong><span>C. Bando de la Huerta, s/n, 30008 Murcia</span></div>
+      </a>
+      <div class="info-item">
+        <div class="info-icon">🕒</div><div><strong>${t.hours}</strong><span>${t.schedule}</span></div>
+      </div>
+      <a class="info-item" href="tel:+34968247882">
+        <div class="info-icon">☎</div><div><strong>${t.phone}</strong><span>968 24 78 82</span></div>
+      </a>
+    </div>
+  </section>
+  <section class="legend fade">
+    <h3>${t.allergens}</h3>
+    <div class="legend-note">${t.allergenNote}</div>
+    <div class="legend-grid">${legends}</div>
+  </section>`;
+}
+
+function activateAnimations(){
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){e.target.classList.add("visible");io.unobserve(e.target);}
+    })
+  },{threshold:.06});
+  document.querySelectorAll(".fade").forEach(el=>io.observe(el));
+}
+
+const flagSVG = {
+  es:`<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#AA151B"/><rect y="5" width="30" height="10" fill="#F1BF00"/></svg>`,
+  en:`<svg viewBox="0 0 60 30" aria-hidden="true"><rect width="60" height="30" fill="#012169"/><path d="M0 0 60 30M60 0 0 30" stroke="#fff" stroke-width="6"/><path d="M0 0 60 30M60 0 0 30" stroke="#C8102E" stroke-width="3"/><path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/><path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6"/></svg>`,
+  fr:`<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="10" height="20" fill="#0055A4"/><rect x="10" width="10" height="20" fill="#fff"/><rect x="20" width="10" height="20" fill="#EF4135"/></svg>`,
+  de:`<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="6.67" fill="#000"/><rect y="6.67" width="30" height="6.67" fill="#DD0000"/><rect y="13.34" width="30" height="6.66" fill="#FFCE00"/></svg>`,
+  zh:`<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#DE2910"/><path d="m5 3 .7 2.1h2.2L6.1 6.4l.7 2.1L5 7.2 3.2 8.5l.7-2.1-1.8-1.3h2.2Z" fill="#FFDE00"/></svg>`
+};
+
+const unitT = {"es":{"unidad":"unidad","100 g":"100 g","persona · mín. 2":"persona · mín. 2","kg":"kg","S/M":"S/M"},"en":{"unidad":"each","100 g":"100 g","persona · mín. 2":"per person · min. 2","kg":"kg","S/M":"market price"},"fr":{"unidad":"pièce","100 g":"100 g","persona · mín. 2":"par personne · min. 2","kg":"kg","S/M":"prix du marché"},"de":{"unidad":"Stück","100 g":"100 g","persona · mín. 2":"pro Person · mind. 2","kg":"kg","S/M":"Tagespreis"},"zh":{"unidad":"每只","100 g":"每100克","persona · mín. 2":"每位 · 至少2位","kg":"每公斤","S/M":"时价"}};
+const menuTitleT = {"es":"Carta La Onda","en":"La Onda Menu","fr":"Carte La Onda","de":"La Onda Speisekarte","zh":"La Onda 菜单"};
+const navAriaT = {"es":"Categorías","en":"Categories","fr":"Catégories","de":"Kategorien","zh":"分类"};
+const documentTitleT = {"es":"Restaurante La Onda | Carta","en":"Restaurante La Onda | Menu","fr":"Restaurante La Onda | Carte","de":"Restaurante La Onda | Speisekarte","zh":"Restaurante La Onda | 菜单"};
+const closeT = {"es":"Cerrar","en":"Close","fr":"Fermer","de":"Schließen","zh":"关闭"};
+
+const languageLabels = {
+  es:["Español"],
+  en:["English"],
+  fr:["Français"],
+  de:["Deutsch"],
+  zh:["中文"]
+};
+
+document.querySelectorAll("[data-flag]").forEach(el=>{
+  el.innerHTML = flagSVG[el.dataset.flag];
+});
+
+const languageButton = document.getElementById("languageButton");
+const languageMenu = document.getElementById("languageMenu");
+const languageCurrent = document.getElementById("languageCurrent");
+
+languageButton.addEventListener("click",()=>{
+  const isOpen = languageMenu.classList.toggle("open");
+  languageButton.setAttribute("aria-expanded", String(isOpen));
+});
+
+document.querySelectorAll(".language-option").forEach(option=>{
+  option.addEventListener("click",()=>{
+    currentLang = option.dataset.lang;
+    const selectedLanguage = languageLabels[currentLang];
+    languageCurrent.innerHTML = `<span class="flag-real">${flagSVG[currentLang]}</span><span>${selectedLanguage[0]}</span>`;
+
+    document.querySelectorAll(".language-option").forEach(btn=>{
+      btn.classList.toggle("active", btn.dataset.lang === currentLang);
+    });
+
+    languageMenu.classList.remove("open");
+    languageButton.setAttribute("aria-expanded","false");
+    render();
+  });
+});
+
+document.addEventListener("click",(e)=>{
+  if(!e.target.closest(".language-picker")){
+    languageMenu.classList.remove("open");
+    languageButton.setAttribute("aria-expanded","false");
+  }
+});
+
+/* FICHA DE PLATO PREMIUM */
+const dishModal=document.getElementById("dishModal");
+const dishModalTitle=document.getElementById("dishModalTitle");
+const dishModalNumber=document.getElementById("dishModalNumber");
+const dishModalPrice=document.getElementById("dishModalPrice");
+const dishModalImage=document.getElementById("dishModalImage");
+const dishDescription=document.getElementById("dishDescription");
+const dishModalAllergens=document.getElementById("dishModalAllergens");
+let typeTimer=null;
+function typeText(text){clearInterval(typeTimer);dishDescription.textContent="";if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){dishDescription.textContent=text;return}let i=0;typeTimer=setInterval(()=>{dishDescription.textContent+=text.charAt(i++);if(i>=text.length)clearInterval(typeTimer)},16)}
+function openDish(index){const dish=dishes[index];if(!dish)return;const[,name,price,allergens=[],tag="",unit=""]=dish;dishModalNumber.textContent=String(index+1).padStart(2,"0");dishModalTitle.textContent=dishName(name);dishModalPrice.textContent=unit?`${price==="S/M"?unitT[currentLang]["S/M"]:price} · ${unitT[currentLang][unit]||unit}`:(price==="S/M"?unitT[currentLang]["S/M"]:price);dishModalImage.src=dishImages[index];dishModalImage.alt=dishName(name);dishModalAllergens.innerHTML=allergens.map(key=>`<span class="allergen-label">${allergenIcon(key)}<span>${allergenNames[currentLang][key]}</span></span>`).join("");dishDescription.textContent="";dishModal.classList.add("open");dishModal.setAttribute("aria-hidden","false");document.body.classList.add("modal-open");
+const rawDescription=(dishDescriptionsByLang[currentLang]&&dishDescriptionsByLang[currentLang][name])||dishDescriptionsByLang.es[name]||name;const localizedDescription=rawDescription.replaceAll("{DISH}",dishName(name));dishDescription.textContent=localizedDescription;}
+function closeDish(){clearInterval(typeTimer);dishModal.classList.remove("open");dishModal.setAttribute("aria-hidden","true");document.body.classList.remove("modal-open")}
+document.addEventListener("click",e=>{const card=e.target.closest(".dish[data-dish-index]");if(card)openDish(Number(card.dataset.dishIndex));if(e.target===dishModal||e.target.closest("#dishClose"))closeDish()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&dishModal.classList.contains("open"))closeDish();if((e.key==="Enter"||e.key===" ")&&document.activeElement?.matches(".dish[data-dish-index]")){e.preventDefault();openDish(Number(document.activeElement.dataset.dishIndex))}});
+
+render();
+</script>
+</body>
+</html>
